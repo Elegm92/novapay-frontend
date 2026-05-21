@@ -1,5 +1,10 @@
+import { Routes, Route } from 'react-router-dom'
 function App() {
-  return <div>NovaPay</div>
+  return (
+    <Routes>
+      <Route path='/' element={<div>NovaPay</div>} />
+    </Routes>
+  )
 }
 
 export default App
