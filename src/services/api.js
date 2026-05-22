@@ -36,4 +36,7 @@ export const createDecision = (payload) =>
 // Stats
 export const getDashboardStats = () => request(() => api.get("/api/stats"));
 
+// Clients
+export const getClientProfile = (nameOrig) => request(() => api.get(`/api/clients/${nameOrig}`));
+
 export default api;
