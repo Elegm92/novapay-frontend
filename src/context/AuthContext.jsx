@@ -1,22 +1,19 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useReducer } from "react";
 import { getMe, loginUser, logoutUser } from "../services/api.js";
+import { authReducer, initialState } from "./authReducer.js";
 
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [state, setEstate] = useReducer(authReducer, initialState);
 
   const refreshSession = async () => {
+    dispatch({ type: "SET_LOADING", payload: true });
     try {
       const data = await getMe();
-      setUser(data.user);
-      setError("");
+      dispatch({ type: "SET_USER", payload: data.user });
     } catch {
-      setUser(null);
-    } finally {
-      setIsLoading(false);
+      dispatch({ type: "LOGOUT" });
     }
   };
 
@@ -27,10 +24,10 @@ export function AuthProvider({ children }) {
   const login = async (credentials) => {
     try {
       const data = await loginUser(credentials);
-      setUser(data.user);
-      setError("");
+      dispatch({ type: "SET_USER", payload: data.user });
+      dispatch({ type: "SET_ERROR", payload: "" });
     } catch (error) {
-      setError(error.message);
+      dispatch({ type: "SET_ERROR", payload: error.message });
       throw error;
     }
   };
@@ -38,21 +35,19 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await logoutUser();
-      setError("");
     } finally {
-      setUser(null);
+       dispatch({ type: "LOGOUT" });
     }
   };
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        error,
-        setError,
-        isLoading,
-        isAuthenticated: !!user,
-        isAdmin: user?.role === "admin",
+        user: state.user,
+        error: state.error,
+        isLoading: state.isLoading,
+        isAuthenticated: !!state.user,
+        isAdmin: state.user?.role === "admin",
         login,
         logout,
         refreshSession,
