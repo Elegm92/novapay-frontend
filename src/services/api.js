@@ -35,6 +35,8 @@ export const createDecision = (payload) =>
 
 // Stats
 export const getDashboardStats = () => request(() => api.get("/api/stats"));
+export const getDSStats = () => request(() => api.get("/api/stats/ds"));
+export const previewThreshold = (payload) => request(() => api.post("/api/fraud/preview", payload));
 
 // Clients
 export const getClientProfile = (nameOrig) => request(() => api.get(`/api/clients/${nameOrig}`));
