@@ -33,6 +33,14 @@ export const getDecisions = () => request(() => api.get("/api/decisions"));
 export const createDecision = (payload) =>
   request(() => api.post("/api/decisions", payload));
 
+// Fraud DS (via nuestro back)
+export const decideTransaction = (payload) =>
+  request(() => api.post("/api/fraud/decide", payload));
+export const getChallengeRecommendation = (payload) =>
+  request(() => api.post("/api/fraud/challenge", payload));
+export const sendFeedback = (payload) =>
+  request(() => api.post("/api/fraud/feedback", payload));
+
 // Stats
 export const getDashboardStats = () => request(() => api.get("/api/stats"));
 
