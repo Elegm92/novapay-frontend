@@ -6,6 +6,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
   const [clientData, setClientData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     if (isOpen && clientId) {
@@ -29,6 +30,9 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const transactions = clientData?.recent_transactions || [];
+  const visibleTransactions = showAll ? transactions : transactions.slice(0, 5);
+
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -38,11 +42,21 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
             <span className="material-icons">person</span>
             <div>
               <h3>Client ID: {clientId}</h3>
-              {clientData && (
+              {clientData?.stats?.fraud_rate_historical != null && (
                 <span
-                  className={`${styles.riskBadge} ${styles[clientData.risk_profile]}`}
+                  className={`${styles.riskBadge} ${
+                    clientData.stats.fraud_rate_historical > 0.5
+                      ? styles.high
+                      : clientData.stats.fraud_rate_historical > 0.2
+                        ? styles.medium
+                        : styles.low
+                  }`}
                 >
-                  {clientData.risk_profile?.toUpperCase()}
+                  {clientData.stats.fraud_rate_historical > 0.5
+                    ? "HIGH RISK"
+                    : clientData.stats.fraud_rate_historical > 0.2
+                      ? "MEDIUM RISK"
+                      : "LOW RISK"}
                 </span>
               )}
             </div>
@@ -63,29 +77,64 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
             <div className={styles.statsGrid}>
               <div className={styles.statCard}>
                 <p>Total Transactions</p>
-                <h3>{clientData.total_transactions}</h3>
+                <h3>{clientData.stats?.total_transactions ?? "—"}</h3>
               </div>
               <div className={styles.statCard}>
-                <p>Total Amount</p>
-                <h3>€{clientData.total_amount?.toLocaleString()}</h3>
+                <p>Total Volume</p>
+                <h3>
+                  €{clientData.stats?.total_volume?.toLocaleString() ?? "—"}
+                </h3>
               </div>
               <div className={styles.statCard}>
-                <p>Fraud Flags</p>
-                <h3 className={styles.dangerText}>{clientData.fraud_flags}</h3>
+                <p>Avg Amount</p>
+                <h3>
+                  €{clientData.stats?.avg_amount?.toLocaleString() ?? "—"}
+                </h3>
+              </div>
+              <div className={styles.statCard}>
+                <p>Historical Fraud Rate</p>
+                <h3>
+                  {clientData.stats?.fraud_rate_historical != null
+                    ? `${(clientData.stats.fraud_rate_historical * 100).toFixed(1)}%`
+                    : "—"}
+                </h3>
+              </div>
+              <div className={styles.statCard}>
+                <p>First Seen</p>
+                <h3>
+                  {clientData.stats?.first_seen
+                    ? new Date(clientData.stats.first_seen).toLocaleDateString()
+                    : "—"}
+                </h3>
               </div>
               <div className={styles.statCard}>
                 <p>Last Seen</p>
                 <h3>
-                  {clientData.last_seen
-                    ? new Date(clientData.last_seen).toLocaleDateString()
-                    : "No disponible"}
+                  {clientData.stats?.last_seen
+                    ? new Date(clientData.stats.last_seen).toLocaleDateString()
+                    : "—"}
                 </h3>
               </div>
             </div>
 
-            {/* Historial de transacciones */}
+            {/* Risk Flags */}
+            {clientData.risk_flags?.length > 0 && (
+              <div className={styles.riskFlags}>
+                <h4>Risk Flags</h4>
+                <div className={styles.flagsList}>
+                  {clientData.risk_flags.map((flag, i) => (
+                    <span key={i} className={styles.flag}>
+                      <span className="material-icons">warning</span>
+                      {flag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Transacciones recientes */}
             <div className={styles.transactionList}>
-              <h4>Last 10 Transactions</h4>
+              <h4>Recent Transactions</h4>
               <table className={styles.table}>
                 <thead>
                   <tr>
@@ -93,38 +142,51 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                     <th>Date</th>
                     <th>Amount</th>
                     <th>Type</th>
-                    <th>Status</th>
+                    <th>Risk</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {clientData.Transactions?.map((tx) => (
+                  {visibleTransactions.map((tx) => (
                     <tr
                       key={tx.transaction_id}
-                      className={tx.decision === "block" ? styles.fraudRow : ""}
+                      className={
+                        tx.risk_level === "high" ? styles.fraudRow : ""
+                      }
                     >
                       <td className={styles.monoText}>{tx.transaction_id}</td>
                       <td>
                         {tx.timestamp
                           ? new Date(tx.timestamp).toLocaleDateString()
-                          : "No disponible"}
+                          : "—"}
                       </td>
                       <td>
                         {tx.amount != null
                           ? `€${tx.amount.toLocaleString()}`
-                          : "No disponible"}
+                          : "—"}
                       </td>
-                      <td>{tx.type || "No disponible"}</td>
+                      <td>{tx.type || "—"}</td>
                       <td>
                         <span
-                          className={`${styles.statusBadge} ${styles[tx.status]}`}
+                          className={`${styles.riskBadge} ${styles[tx.risk_level]}`}
                         >
-                          {tx.status || "No disponible"}
+                          {tx.risk_level?.toUpperCase() || "—"}
                         </span>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
+              {transactions.length > 5 && (
+                <button
+                  className={styles.showMoreBtn}
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll
+                    ? "Show less"
+                    : `Show all ${transactions.length} transactions`}
+                </button>
+              )}
             </div>
           </>
         ) : null}

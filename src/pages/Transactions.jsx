@@ -27,7 +27,9 @@ const Transactions = () => {
 
       const data = await getQueue({
         risk_level: filters.risk_level || undefined,
+        type: filters.type || undefined,
         limit: 50,
+        offset: 0,
       });
       setTransactions(data.queue || []);
     } catch (error) {
@@ -52,7 +54,6 @@ const Transactions = () => {
   };
 
   const visibleTransactions = transactions.filter((tx) => {
-    const matchesType = filters.type ? tx.type === filters.type : true;
 
     const matchesTab =
       activeTab === "pending"
@@ -63,7 +64,7 @@ const Transactions = () => {
             ? tx.decision?.toLowerCase() === "allow"
             : true;
 
-    return matchesType && matchesTab;
+    return matchesTab;
   });
 
   return (

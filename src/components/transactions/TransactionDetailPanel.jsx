@@ -16,7 +16,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
 
   useEffect(() => {
     if (!transaction || decision) return;
-
     fetchMLData();
   }, [transaction, decision]);
 
@@ -25,7 +24,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
       setLoading(true);
       setError("");
 
-      // 1. Primero POST /fraud/decide
       const decisionData = await decideTransaction({
         transaction_id: transaction.transaction_id,
         step: transaction.step,
@@ -42,7 +40,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
       });
       setDecision(decisionData);
 
-      // 2. Luego POST /fraud/challenge con los valores de decide
       const challengeData = await getChallengeRecommendation({
         transaction_id: transaction.transaction_id,
         fraud_probability: decisionData.fraud_probability,
@@ -65,7 +62,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
       setChallenge(challengeData);
     } catch (error) {
       console.error("Error fetching ML data:", error);
-      setError("No se pudo cargar el análisis del modelo.");
+      setError("Could not load model analysis.");
     } finally {
       setLoading(false);
     }
@@ -91,22 +88,18 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
         <div className={styles.dataGrid}>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Source Account</p>
-            <p className={styles.dataValue}>
-              {transaction.nameOrig || "No disponible"}
-            </p>
+            <p className={styles.dataValue}>{transaction.nameOrig || "—"}</p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Destination</p>
-            <p className={styles.dataValue}>
-              {transaction.nameDest || "No disponible"}
-            </p>
+            <p className={styles.dataValue}>{transaction.nameDest || "—"}</p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Balance Before</p>
             <p className={styles.dataValue}>
               {transaction.oldbalanceOrg != null
                 ? `$${transaction.oldbalanceOrg.toLocaleString()}`
-                : "No disponible"}
+                : "—"}
             </p>
           </div>
           <div className={styles.dataItem}>
@@ -114,27 +107,39 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
             <p className={styles.dataValue}>
               {transaction.newbalanceOrig != null
                 ? `$${transaction.newbalanceOrig.toLocaleString()}`
-                : "No disponible"}
+                : "—"}
+            </p>
+          </div>
+          <div className={styles.dataItem}>
+            <p className={styles.dataLabel}>Dest. Balance Before</p>
+            <p className={styles.dataValue}>
+              {transaction.oldbalanceDest != null
+                ? `$${transaction.oldbalanceDest.toLocaleString()}`
+                : "—"}
+            </p>
+          </div>
+          <div className={styles.dataItem}>
+            <p className={styles.dataLabel}>Dest. Balance After</p>
+            <p className={styles.dataValue}>
+              {transaction.newbalanceDest != null
+                ? `$${transaction.newbalanceDest.toLocaleString()}`
+                : "—"}
             </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>IP Country</p>
-            <p className={styles.dataValue}>
-              {transaction.ip_country || "No disponible"}
-            </p>
+            <p className={styles.dataValue}>{transaction.ip_country || "—"}</p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Category</p>
             <p className={styles.dataValue}>
-              {transaction.merchant_category || "No disponible"}
+              {transaction.merchant_category || "—"}
             </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Step</p>
             <p className={styles.dataValue}>
-              {transaction.step != null
-                ? `Hour ${transaction.step}`
-                : "No disponible"}
+              {transaction.step != null ? `Hour ${transaction.step}` : "—"}
             </p>
           </div>
         </div>
@@ -147,7 +152,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
           <div className={styles.loading}>Loading ML analysis...</div>
         ) : (
           <>
-            {/* Decisión del modelo */}
             {decision && (
               <div className={styles.decisionSection}>
                 <h3>ML Decision</h3>
@@ -166,7 +170,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
               </div>
             )}
 
-            {/* Recomendación de fricción */}
             {challenge && (
               <div className={styles.challengeSection}>
                 <h3>Friction Recommendation</h3>
@@ -189,7 +192,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
               </div>
             )}
 
-            {/* Formulario de veredicto */}
             <VerdictForm
               transaction={transaction}
               decision={decision}
@@ -199,7 +201,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
         )}
       </div>
 
-      {/* Client Modal */}
       {clientModalOpen && (
         <ClientModal
           clientId={transaction.nameOrig}
