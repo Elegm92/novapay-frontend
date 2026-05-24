@@ -1,24 +1,29 @@
-import { useState, useEffect } from 'react'
-import { decideTransaction, getChallengeRecommendation } from '../../services/api.js'
-import VerdictForm from './VerdictForm.jsx'
-import ClientModal from './ClientModal.jsx'
-import styles from './TransactionDetailPanel.module.css'
+import { useState, useEffect } from "react";
+import {
+  decideTransaction,
+  getChallengeRecommendation,
+} from "../../services/api.js";
+import VerdictForm from "./VerdictForm.jsx";
+import ClientModal from "./ClientModal.jsx";
+import styles from "./TransactionDetailPanel.module.css";
 
 const TransactionDetailPanel = ({ transaction, onClose }) => {
-  const [decision, setDecision] = useState(null)
-  const [challenge, setChallenge] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [clientModalOpen, setClientModalOpen] = useState(false)
+  const [decision, setDecision] = useState(null);
+  const [challenge, setChallenge] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [clientModalOpen, setClientModalOpen] = useState(false);
 
   useEffect(() => {
-    if (transaction) {
-      fetchMLData()
-    }
-  }, [transaction])
+    if (!transaction || decision) return;
+
+    fetchMLData();
+  }, [transaction, decision]);
 
   const fetchMLData = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
+      setError("");
 
       // 1. Primero POST /fraud/decide
       const decisionData = await decideTransaction({
@@ -34,8 +39,8 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
         newbalanceDest: transaction.newbalanceDest,
         merchant_category: transaction.merchant_category,
         ip_country: transaction.ip_country,
-      })
-      setDecision(decisionData)
+      });
+      setDecision(decisionData);
 
       // 2. Luego POST /fraud/challenge con los valores de decide
       const challengeData = await getChallengeRecommendation({
@@ -55,18 +60,18 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
           newbalanceDest: transaction.newbalanceDest,
           merchant_category: transaction.merchant_category,
           ip_country: transaction.ip_country,
-        }
-      })
-      setChallenge(challengeData)
-
+        },
+      });
+      setChallenge(challengeData);
     } catch (error) {
-      console.error('Error fetching ML data:', error)
+      console.error("Error fetching ML data:", error);
+      setError("No se pudo cargar el análisis del modelo.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (!transaction) return null
+  if (!transaction) return null;
 
   return (
     <div className={styles.panel}>
@@ -79,44 +84,65 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
             onClick={() => setClientModalOpen(true)}
           >
             <span className="material-icons">person_search</span>
-            View Client: {transaction.nameOrig}
+            View Client: {transaction.nameOrig || "Unknown"}
           </button>
         </div>
 
         <div className={styles.dataGrid}>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Source Account</p>
-            <p className={styles.dataValue}>{transaction.nameOrig}</p>
+            <p className={styles.dataValue}>
+              {transaction.nameOrig || "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Destination</p>
-            <p className={styles.dataValue}>{transaction.nameDest}</p>
+            <p className={styles.dataValue}>
+              {transaction.nameDest || "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Balance Before</p>
-            <p className={styles.dataValue}>${transaction.oldbalanceOrg?.toLocaleString()}</p>
+            <p className={styles.dataValue}>
+              {transaction.oldbalanceOrg != null
+                ? `$${transaction.oldbalanceOrg.toLocaleString()}`
+                : "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Balance After</p>
-            <p className={styles.dataValue}>${transaction.newbalanceOrig?.toLocaleString()}</p>
+            <p className={styles.dataValue}>
+              {transaction.newbalanceOrig != null
+                ? `$${transaction.newbalanceOrig.toLocaleString()}`
+                : "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>IP Country</p>
-            <p className={styles.dataValue}>{transaction.ip_country}</p>
+            <p className={styles.dataValue}>
+              {transaction.ip_country || "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Category</p>
-            <p className={styles.dataValue}>{transaction.merchant_category}</p>
+            <p className={styles.dataValue}>
+              {transaction.merchant_category || "No disponible"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Step</p>
-            <p className={styles.dataValue}>{transaction.step}h</p>
+            <p className={styles.dataValue}>
+              {transaction.step != null
+                ? `Hour ${transaction.step}`
+                : "No disponible"}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Columna derecha — Informe ML */}
       <div className={styles.rightColumn}>
+        {error && <div className={styles.error}>{error}</div>}
         {loading ? (
           <div className={styles.loading}>Loading ML analysis...</div>
         ) : (
@@ -126,11 +152,15 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
               <div className={styles.decisionSection}>
                 <h3>ML Decision</h3>
                 <div className={styles.decisionBadge}>
-                  <span className={`${styles.decision} ${styles[decision.decision]}`}>
+                  <span
+                    className={`${styles.decision} ${styles[decision.decision]}`}
+                  >
                     {decision.decision?.toUpperCase()}
                   </span>
                   <span className={styles.probability}>
-                    {Math.round(decision.fraud_probability * 100)}% fraud probability
+                    {decision.fraud_probability != null
+                      ? `${Math.round(decision.fraud_probability * 100)}% fraud probability`
+                      : "Probability not available"}
                   </span>
                 </div>
               </div>
@@ -140,15 +170,21 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
             {challenge && (
               <div className={styles.challengeSection}>
                 <h3>Friction Recommendation</h3>
-                <div className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}>
+                <div
+                  className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}
+                >
                   <span className="material-icons">
-                    {challenge.primary_option?.friction === 'high' ? 'block' : 'warning'}
+                    {challenge.primary_option?.friction === "high"
+                      ? "block"
+                      : "warning"}
                   </span>
                   <span>{challenge.recommended_action?.toUpperCase()}</span>
                 </div>
                 <p className={styles.reasoning}>{challenge.reasoning}</p>
                 {challenge.primary_option?.user_message && (
-                  <p className={styles.userMessage}>{challenge.primary_option.user_message}</p>
+                  <p className={styles.userMessage}>
+                    {challenge.primary_option.user_message}
+                  </p>
                 )}
               </div>
             )}
@@ -172,7 +208,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TransactionDetailPanel
+export default TransactionDetailPanel;

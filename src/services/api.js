@@ -25,11 +25,9 @@ export const getMe = () => request(() => api.get("/api/auth/me"));
 // Transactions
 export const getQueue = (params) =>
   request(() => api.get("/api/transactions", { params }));
-export const getTransactionById = (id) =>
-  request(() => api.get(`/api/transactions/${id}`));
 
 // Decisions
-export const getDecisions = () => request(() => api.get("/api/decisions"));
+export const getDecisions = (params) => request(() => api.get("/api/decisions", { params }));
 export const createDecision = (payload) =>
   request(() => api.post("/api/decisions", payload));
 

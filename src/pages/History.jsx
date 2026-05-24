@@ -1,107 +1,116 @@
-import { useState, useEffect } from 'react'
-import { getDecisions } from '../services/api.js'
-import HistoryTable from '../components/history/HistoryTable.jsx'
-import HistoryDetailModal from '../components/history/HistoryDetailModal.jsx'
-import styles from './History.module.css'
+import { useState, useEffect } from "react";
+import { getDecisions } from "../services/api.js";
+import Layout from "../components/shared/Layout.jsx";
+import HistoryTable from "../components/history/HistoryTable.jsx";
+import HistoryDetailModal from "../components/history/HistoryDetailModal.jsx";
+import styles from "./History.module.css";
 
 const History = () => {
-  const [decisions, setDecisions] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [decisions, setDecisions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [filters, setFilters] = useState({
-    verdict: '',
-    dateFrom: '',
-    dateTo: ''
-  })
-  const [selectedDecision, setSelectedDecision] = useState(null)
+    verdict: "",
+    dateFrom: "",
+    dateTo: "",
+  });
+  const [selectedDecision, setSelectedDecision] = useState(null);
 
   useEffect(() => {
-    fetchDecisions()
-  }, [filters])
+    fetchDecisions();
+  }, [filters]);
 
   const fetchDecisions = async () => {
     try {
-      setLoading(true)
-      const data = await getDecisions(filters)
-      setDecisions(data || [])
+      setLoading(true);
+      setError("");
+      const data = await getDecisions(filters);
+      setDecisions(data || []);
     } catch (error) {
-      console.error('Error fetching decisions:', error)
+      console.error("Error fetching decisions:", error);
+      setError("Failed to load decision history.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleRowClick = (decision) => {
-    setSelectedDecision(decision)
-  }
+    setSelectedDecision(decision);
+  };
 
   const handleModalClose = () => {
-    setSelectedDecision(null)
-  }
+    setSelectedDecision(null);
+  };
 
   return (
-    <div className={styles.container}>
-
-      {/* Header */}
-      <div className={styles.pageHeader}>
-        <h2>Decision History</h2>
-        <p>Review all past verdicts and analyst rationales.</p>
-      </div>
-
-      {/* Filters */}
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label>Verdict</label>
-          <select
-            value={filters.verdict}
-            onChange={(e) => setFilters({ ...filters, verdict: e.target.value })}
-          >
-            <option value="">All Verdicts</option>
-            <option value="fraud">Fraud</option>
-            <option value="legitimate">Legitimate</option>
-          </select>
+    <Layout>
+      <div className={styles.container}>
+        {/* Header */}
+        <div className={styles.pageHeader}>
+          <h2>Decision History</h2>
+          <p>Review all past verdicts and analyst rationales.</p>
         </div>
-        <div className={styles.filterGroup}>
-          <label>From</label>
-          <input
-            type="date"
-            value={filters.dateFrom}
-            onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-          />
-        </div>
-        <div className={styles.filterGroup}>
-          <label>To</label>
-          <input
-            type="date"
-            value={filters.dateTo}
-            onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-          />
-        </div>
-        <button
-          className={styles.filterBtn}
-          onClick={fetchDecisions}
-        >
-          Apply Filters
-        </button>
-      </div>
 
-      {/* Tabla */}
-      {loading ? (
-        <div className={styles.loading}>Loading decisions...</div>
-      ) : (
-        <HistoryTable
-          decisions={decisions}
-          onRowClick={handleRowClick}
+        {/* Filters */}
+        <div className={styles.filters}>
+          <div className={styles.filterGroup}>
+            <label>Verdict</label>
+            <select
+              value={filters.verdict}
+              onChange={(e) =>
+                setFilters({ ...filters, verdict: e.target.value })
+              }
+            >
+              <option value="">All Verdicts</option>
+              <option value="fraud">Fraud</option>
+              <option value="legitimate">Legitimate</option>
+            </select>
+          </div>
+          <div className={styles.filterGroup}>
+            <label>From</label>
+            <input
+              type="date"
+              value={filters.dateFrom}
+              onChange={(e) =>
+                setFilters({ ...filters, dateFrom: e.target.value })
+              }
+            />
+          </div>
+          <div className={styles.filterGroup}>
+            <label>To</label>
+            <input
+              type="date"
+              value={filters.dateTo}
+              onChange={(e) =>
+                setFilters({ ...filters, dateTo: e.target.value })
+              }
+            />
+          </div>
+          <button className={styles.filterBtn} onClick={fetchDecisions}>
+            Apply Filters
+          </button>
+        </div>
+
+        {/* Tabla */}
+        {error && <div className={styles.error}>{error}</div>}
+
+        {loading ? (
+          <div className={styles.loading}>Loading decisions...</div>
+        ) : decisions.length === 0 ? (
+          <div className={styles.emptyState}>No decisions found.</div>
+        ) : (
+          <HistoryTable decisions={decisions} onRowClick={handleRowClick} />
+        )}
+
+        {/* Modal de detalle */}
+        <HistoryDetailModal
+          decision={selectedDecision}
+          isOpen={!!selectedDecision}
+          onClose={handleModalClose}
         />
-      )}
+      </div>
+    </Layout>
+  );
+};
 
-      {/* Modal de detalle */}
-      <HistoryDetailModal
-        decision={selectedDecision}
-        isOpen={!!selectedDecision}
-        onClose={handleModalClose}
-      />
-    </div>
-  )
-}
-
-export default History
+export default History;

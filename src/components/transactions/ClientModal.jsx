@@ -1,38 +1,37 @@
-import { useState, useEffect } from 'react'
-import { getClientProfile } from '../../services/api.js'
-import styles from './ClientModal.module.css'
+import { useState, useEffect } from "react";
+import { getClientProfile } from "../../services/api.js";
+import styles from "./ClientModal.module.css";
 
 const ClientModal = ({ clientId, isOpen, onClose }) => {
-  const [clientData, setClientData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [clientData, setClientData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (isOpen && clientId) {
-      fetchClientProfile()
+      fetchClientProfile();
     }
-  }, [isOpen, clientId])
+  }, [isOpen, clientId]);
 
   const fetchClientProfile = async () => {
     try {
-      setLoading(true)
-      setError('')
-      const data = await getClientProfile(clientId)
-      setClientData(data)
+      setLoading(true);
+      setError("");
+      const data = await getClientProfile(clientId);
+      setClientData(data);
     } catch (error) {
-      console.error('Error fetching client profile:', error)
-      setError('Client profile not available yet.')
+      console.error("Error fetching client profile:", error);
+      setError("Client profile not available yet.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.titleArea}>
@@ -40,7 +39,9 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
             <div>
               <h3>Client ID: {clientId}</h3>
               {clientData && (
-                <span className={`${styles.riskBadge} ${styles[clientData.risk_profile]}`}>
+                <span
+                  className={`${styles.riskBadge} ${styles[clientData.risk_profile]}`}
+                >
                   {clientData.risk_profile?.toUpperCase()}
                 </span>
               )}
@@ -74,7 +75,11 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
               </div>
               <div className={styles.statCard}>
                 <p>Last Seen</p>
-                <h3>{new Date(clientData.last_seen).toLocaleDateString()}</h3>
+                <h3>
+                  {clientData.last_seen
+                    ? new Date(clientData.last_seen).toLocaleDateString()
+                    : "No disponible"}
+                </h3>
               </div>
             </div>
 
@@ -92,18 +97,28 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {clientData.transactions?.map((tx) => (
+                  {clientData.Transactions?.map((tx) => (
                     <tr
                       key={tx.transaction_id}
-                      className={tx.status === 'fraud' ? styles.fraudRow : ''}
+                      className={tx.decision === "block" ? styles.fraudRow : ""}
                     >
                       <td className={styles.monoText}>{tx.transaction_id}</td>
-                      <td>{new Date(tx.timestamp).toLocaleDateString()}</td>
-                      <td>€{tx.amount?.toLocaleString()}</td>
-                      <td>{tx.type}</td>
                       <td>
-                        <span className={`${styles.statusBadge} ${styles[tx.status]}`}>
-                          {tx.status}
+                        {tx.timestamp
+                          ? new Date(tx.timestamp).toLocaleDateString()
+                          : "No disponible"}
+                      </td>
+                      <td>
+                        {tx.amount != null
+                          ? `€${tx.amount.toLocaleString()}`
+                          : "No disponible"}
+                      </td>
+                      <td>{tx.type || "No disponible"}</td>
+                      <td>
+                        <span
+                          className={`${styles.statusBadge} ${styles[tx.status]}`}
+                        >
+                          {tx.status || "No disponible"}
                         </span>
                       </td>
                     </tr>
@@ -116,11 +131,13 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
 
         {/* Footer */}
         <div className={styles.footer}>
-          <button className={styles.closeButton} onClick={onClose}>Close</button>
+          <button className={styles.closeButton} onClick={onClose}>
+            Close
+          </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ClientModal
+export default ClientModal;
