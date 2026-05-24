@@ -5,7 +5,7 @@ import { authReducer, initialState } from "./authReducer.js";
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [state, setEstate] = useReducer(authReducer, initialState);
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   const refreshSession = async () => {
     dispatch({ type: "SET_LOADING", payload: true });
@@ -40,6 +40,10 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const setError = (message) => {
+    dispatch({ type: "SET_ERROR", payload: message });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -50,6 +54,7 @@ export function AuthProvider({ children }) {
         isAdmin: state.user?.role === "admin",
         login,
         logout,
+        setError,
         refreshSession,
       }}
     >

@@ -63,27 +63,27 @@ function ThresholdSimulator() {
         <section className={styles.results}>
           <article className={styles.resultItem}>
             <span>Blocked</span>
-            <strong>{preview.blocked}</strong>
+            <strong>{preview.preview_config.blocked}</strong>
           </article>
           <article className={styles.resultItem}>
             <span>Reviewed</span>
-            <strong>{preview.reviewed}</strong>
+            <strong>{preview.preview_config.reviewed}</strong>
           </article>
           <article className={styles.resultItem}>
             <span>Allowed</span>
-            <strong>{preview.allowed}</strong>
+            <strong>{preview.preview_config.allowed}</strong>
           </article>
           <article className={styles.resultItem}>
             <span>Fraud caught</span>
-            <strong>{preview.fraud_caught}</strong>
+            <strong>{preview.preview_config.fraud_caught}</strong>
           </article>
           <article className={styles.resultItem}>
             <span>False positives</span>
-            <strong>{preview.false_positives}</strong>
+            <strong>{preview.preview_config.false_positives}</strong>
           </article>
           <article className={styles.resultItem}>
             <span>Money saved</span>
-            <strong>€{preview.money_saved_eur}</strong>
+            <strong>€{preview.preview_config.money_saved_eur}</strong>
           </article>
           {preview.delta?.recommendation && (
             <p className={styles.recommendation}>

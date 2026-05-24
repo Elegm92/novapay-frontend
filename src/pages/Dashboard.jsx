@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { getDashboardStats } from '../services/api.js'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getDashboardStats } from "../services/api.js";
 import Layout from "../components/shared/Layout.jsx";
 import ThresholdSimulator from "../components/dashboard/ThresholdSimulator.jsx";
 import RiskMap from "../components/dashboard/RiskMap.jsx";
@@ -7,26 +8,27 @@ import KPICard from "../components/shared/KPICard.jsx";
 import styles from "./Dashboard.module.css";
 
 function Dashboard() {
-  const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data = await getDashboardStats()
-        setStats(data)
+        const data = await getDashboardStats();
+        setStats(data);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchStats()
-  }, [])
+    };
+    fetchStats();
+  }, []);
 
-  if (loading) return <p>Cargando...</p>
-  if (error) return <p>Error: {error}</p>
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Layout>
@@ -37,7 +39,12 @@ function Dashboard() {
             <h2>{stats?.pending_cases ?? "—"} Pending Cases</h2>
             <p>Review required. Check the transactions queue.</p>
           </section>
-          <button className={styles.viewCasesBtn}>View all cases</button>
+          <button
+            className={styles.viewCasesBtn}
+            onClick={() => navigate("/transactions")}
+          >
+            View all cases
+          </button>
         </section>
 
         {stats && (
@@ -74,10 +81,9 @@ function Dashboard() {
           <RiskMap />
           <ThresholdSimulator />
         </section>
-        
       </section>
     </Layout>
   );
 }
 
-export default Dashboard
+export default Dashboard;
