@@ -1,0 +1,331 @@
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  padding: 0;
+}
+
+/* ── Modal ── */
+.modal {
+  background: var(--color-surface-white);
+  width: 100%;
+  max-height: 90vh;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.titleArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titleArea span {
+  font-size: 24px;
+  color: var(--color-primary);
+}
+
+.titleArea h3 {
+  font-family: var(--font-headline);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Risk badge ── */
+.riskBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.riskBadge.high {
+  background: var(--color-high-bg);
+  color: var(--color-high);
+}
+
+.riskBadge.medium {
+  background: var(--color-medium-bg);
+  color: var(--color-medium);
+}
+
+.riskBadge.low {
+  background: var(--color-low-bg);
+  color: var(--color-low);
+}
+
+.closeBtn {
+  background: none;
+  color: var(--color-text-muted);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.closeBtn:hover {
+  color: var(--color-text);
+  opacity: 1;
+}
+
+/* ── Contenido scrollable ── */
+.modal > * {
+  overflow-y: auto;
+}
+
+/* ── Loading / Error ── */
+.loading {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.error {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-error);
+}
+
+/* ── Stats grid ── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.statCard {
+  background: var(--color-surface-white);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statCard p {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statCard h3 {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Risk flags ── */
+.riskFlags {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.riskFlags h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.flagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--color-review-bg);
+  color: var(--color-review);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.flag span {
+  font-size: 14px;
+}
+
+/* ── Transaction list ── */
+.transactionList {
+  padding: 16px 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.transactionList h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px;
+}
+
+.table thead {
+  background: var(--color-surface-low);
+}
+
+.table th {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.fraudRow td {
+  background: var(--color-fraud-bg);
+}
+
+.monoText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ── Show more button ── */
+.showMoreBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: var(--transition);
+}
+
+.showMoreBtn:hover {
+  background: var(--color-primary-fixed);
+  opacity: 1;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.closeButton {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: var(--transition);
+}
+
+.closeButton:hover {
+  background: var(--color-surface-high);
+  opacity: 1;
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .overlay {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 640px;
+    max-height: 85vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .modal {
+    max-width: 720px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .header {
+    padding: 20px 28px;
+  }
+
+  .transactionList {
+    padding: 20px 28px;
+  }
+
+  .riskFlags {
+    padding: 16px 28px;
+  }
+
+  .footer {
+    padding: 16px 28px;
+  }
+}

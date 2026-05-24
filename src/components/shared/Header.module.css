@@ -1,0 +1,190 @@
+/* ── Header ── */
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 64px;
+  background: var(--color-surface-white);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 40;
+  gap: 16px;
+}
+
+/* ── Search ── */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 100%;
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  transition: var(--transition);
+}
+
+.search:focus-within {
+  border-color: var(--color-primary);
+  background: var(--color-surface-white);
+}
+
+.search span {
+  color: var(--color-text-light);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.search input {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-text);
+  background: transparent;
+  min-width: 0;
+}
+
+.search input::placeholder {
+  color: var(--color-text-light);
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Notificaciones */
+.iconBtn {
+  position: relative;
+  background: none;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.iconBtn:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-error);
+  border-radius: 50%;
+  border: 1px solid var(--color-surface-white);
+}
+
+/* ── User ── */
+.user {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--color-border);
+}
+
+.user img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.userText {
+  display: none;
+  flex-direction: column;
+  text-align: right;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.role {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Logout ── */
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.logout span {
+  font-size: 18px;
+}
+
+.logout:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+/* ocultar texto logout en mobile */
+.logout span:last-child {
+  display: none;
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .header {
+    padding: 0 20px;
+    gap: 20px;
+  }
+
+  .user {
+    display: flex;
+  }
+
+  .logout span:last-child {
+    display: inline;
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .header {
+    left: 280px;
+    padding: 0 24px;
+  }
+
+  .search {
+    max-width: 480px;
+  }
+
+  .userText {
+    display: flex;
+  }
+
+  .actions {
+    gap: 16px;
+  }
+}

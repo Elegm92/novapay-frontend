@@ -43,6 +43,7 @@ export const sendFeedback = (payload) =>
 export const getDashboardStats = () => request(() => api.get("/api/stats"));
 export const getDSStats = () => request(() => api.get("/api/stats/ds"));
 export const previewThreshold = (payload) => request(() => api.post("/api/fraud/preview", payload));
+export const getHistoryStats = () => request(() => api.get("/api/stats/history"));
 
 // Clients
 export const getClientProfile = (nameOrig) => request(() => api.get(`/api/clients/${nameOrig}`));

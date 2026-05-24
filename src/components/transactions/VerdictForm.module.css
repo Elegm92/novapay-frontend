@@ -1,0 +1,134 @@
+/* ── Form ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form h3 {
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Input group ── */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputGroup label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.required {
+  color: var(--color-error);
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  transition: var(--transition);
+}
+
+.textarea:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface-white);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-light);
+}
+
+/* ── Error ── */
+.error {
+  font-size: 13px;
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+}
+
+/* ── Buttons ── */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fraudBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--color-fraud);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.fraudBtn:hover {
+  opacity: 0.9;
+}
+
+.fraudBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.legitimateBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--color-legitimate);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.legitimateBtn:hover {
+  opacity: 0.9;
+}
+
+.legitimateBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .buttons {
+    flex-direction: row;
+  }
+
+  .fraudBtn,
+  .legitimateBtn {
+    flex: 1;
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .textarea {
+    min-height: 120px;
+  }
+}
