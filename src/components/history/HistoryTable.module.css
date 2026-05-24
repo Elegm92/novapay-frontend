@@ -1,0 +1,133 @@
+.tableWrapper {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 500px;
+}
+
+.table thead {
+  background: var(--color-surface-low);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+  padding: 10px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Mobile — ocultar columnas menos importantes */
+.table th:nth-child(4),
+.table td:nth-child(4),
+.table th:nth-child(6),
+.table td:nth-child(6) {
+  display: none;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid rgba(209, 217, 226, 0.3);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.table tbody tr:hover {
+  background: var(--color-surface-low);
+}
+
+.table td {
+  padding: 12px;
+  color: var(--color-text);
+}
+
+.monoText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.truncate {
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-muted);
+}
+
+.verdictBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fraud {
+  background: var(--color-fraud-bg);
+  color: var(--color-fraud);
+}
+
+.legitimate {
+  background: var(--color-legitimate-bg);
+  color: var(--color-legitimate);
+}
+
+.empty {
+  padding: 48px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+  .table {
+    font-size: 14px;
+  }
+
+  .table th,
+  .table td {
+    padding: 14px 24px;
+  }
+
+  .table th:nth-child(4),
+  .table td:nth-child(4),
+  .table th:nth-child(6),
+  .table td:nth-child(6) {
+    display: table-cell;
+  }
+
+  .truncate {
+    max-width: 240px;
+  }
+}
+@media (min-width: 1024px) {
+  .table th,
+  .table td {
+    padding: 16px 32px;
+  }
+
+  .truncate {
+    max-width: 320px;
+  }
+}

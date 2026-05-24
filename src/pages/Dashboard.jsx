@@ -5,6 +5,7 @@ import Layout from "../components/shared/Layout.jsx";
 import ThresholdSimulator from "../components/dashboard/ThresholdSimulator.jsx";
 import RiskMap from "../components/dashboard/RiskMap.jsx";
 import KPICard from "../components/shared/KPICard.jsx";
+import DetectionBenchmark from "../components/dashboard/DetectionBenchmark.jsx";
 import styles from "./Dashboard.module.css";
 
 function Dashboard() {
@@ -80,6 +81,7 @@ function Dashboard() {
         <section className={styles.bottomGrid}>
           <RiskMap />
           <ThresholdSimulator />
+          <DetectionBenchmark />
         </section>
       </section>
     </Layout>
