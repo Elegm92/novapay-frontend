@@ -1,0 +1,134 @@
+.benchmark {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.bars {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.primary {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.barTrack {
+  height: 32px;
+  background: var(--color-surface-low);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--color-primary-fixed);
+  transition: width 0.5s ease;
+}
+
+.barFillPrimary {
+  background: var(--color-primary);
+}
+
+.metrics {
+  padding: 16px;
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+}
+
+.metric strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+}
+
+.loading {
+  padding: 32px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 20px 24px;
+  }
+
+  .bars {
+    padding: 24px;
+  }
+
+  .metrics {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding: 24px 32px;
+  }
+
+  .bars {
+    padding: 32px;
+  }
+
+  .metrics {
+    padding: 32px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
