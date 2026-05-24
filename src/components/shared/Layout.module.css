@@ -1,0 +1,40 @@
+/* ── Layout principal ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  /* Mobile: sin sidebar */
+  margin-left: 0;
+}
+
+.content {
+  margin-top: 64px; /* header height */
+  padding: 16px;
+  flex: 1;
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .content {
+    padding: 20px;
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .main {
+    margin-left: 280px; /* sidebar width */
+  }
+
+  .content {
+    padding: 24px;
+  }
+}

@@ -1,0 +1,179 @@
+/* ── Wrapper ── */
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-white);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Table ── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.table thead {
+  background: var(--color-surface-low);
+}
+
+.table th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* ── Rows ── */
+.row {
+  cursor: pointer;
+  transition: background-color var(--transition);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background: var(--color-surface-low);
+}
+
+.row.expanded {
+  background: var(--color-primary-fixed);
+}
+
+.table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* ── Cells ── */
+.monoText {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.bold {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── Type badge ── */
+.typeBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--color-surface-high);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+}
+
+/* ── Score bar ── */
+.scoreWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+}
+
+.scoreBar {
+  flex: 1;
+  height: 6px;
+  background: var(--color-surface-high);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.scoreFill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  transition: width var(--transition);
+}
+
+.scoreFill.high {
+  background: var(--color-high);
+}
+
+.scoreFill.medium {
+  background: var(--color-medium);
+}
+
+.scoreFill.low {
+  background: var(--color-low);
+}
+
+.scoreNumber {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ── Risk badge ── */
+.riskBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.riskBadge.high {
+  background: var(--color-high-bg);
+  color: var(--color-high);
+}
+
+.riskBadge.medium {
+  background: var(--color-medium-bg);
+  color: var(--color-medium);
+}
+
+.riskBadge.low {
+  background: var(--color-low-bg);
+  color: var(--color-low);
+}
+
+/* ── Empty ── */
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .table th,
+  .table td {
+    padding: 12px 20px;
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .table {
+    min-width: unset;
+  }
+
+  .table th,
+  .table td {
+    padding: 14px 24px;
+  }
+}

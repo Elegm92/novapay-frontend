@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { getDecisions } from "../services/api.js";
+import { getDecisions, getHistoryStats } from "../services/api.js";
 import Layout from "../components/shared/Layout.jsx";
 import HistoryTable from "../components/history/HistoryTable.jsx";
 import HistoryDetailModal from "../components/history/HistoryDetailModal.jsx";
+import KPICard from "../components/shared/KPICard.jsx";
 import styles from "./History.module.css";
 
 const History = () => {
   const [decisions, setDecisions] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filters, setFilters] = useState({
@@ -18,6 +20,7 @@ const History = () => {
 
   useEffect(() => {
     fetchDecisions();
+    fetchStats();
   }, [filters]);
 
   const fetchDecisions = async () => {
@@ -34,13 +37,17 @@ const History = () => {
     }
   };
 
-  const handleRowClick = (decision) => {
-    setSelectedDecision(decision);
+  const fetchStats = async () => {
+    try {
+      const data = await getHistoryStats();
+      setStats(data);
+    } catch (error) {
+      console.error("Error fetching history stats:", error);
+    }
   };
 
-  const handleModalClose = () => {
-    setSelectedDecision(null);
-  };
+  const handleRowClick = (decision) => setSelectedDecision(decision);
+  const handleModalClose = () => setSelectedDecision(null);
 
   return (
     <Layout>
@@ -50,6 +57,34 @@ const History = () => {
           <h2>Decision History</h2>
           <p>Review all past verdicts and analyst rationales.</p>
         </div>
+
+        {/* Tarjetas de resumen */}
+        <section className={styles.kpiGrid}>
+          <KPICard
+            label="Total Approved"
+            value={stats?.total_approved ?? "—"}
+            icon="check_circle"
+          />
+          <KPICard
+            label="Total Blocked"
+            value={stats?.total_blocked ?? "—"}
+            icon="block"
+          />
+          <KPICard
+            label="Manual Flags"
+            value={stats?.manual_flags ?? "—"}
+            icon="flag"
+          />
+          <KPICard
+            label="Avg. Resolve Time"
+            value={
+              stats?.avg_resolve_time_minutes != null
+                ? `${stats.avg_resolve_time_minutes} min`
+                : "—"
+            }
+            icon="timer"
+          />
+        </section>
 
         {/* Filters */}
         <div className={styles.filters}>
@@ -93,7 +128,6 @@ const History = () => {
 
         {/* Tabla */}
         {error && <div className={styles.error}>{error}</div>}
-
         {loading ? (
           <div className={styles.loading}>Loading decisions...</div>
         ) : decisions.length === 0 ? (
@@ -102,7 +136,6 @@ const History = () => {
           <HistoryTable decisions={decisions} onRowClick={handleRowClick} />
         )}
 
-        {/* Modal de detalle */}
         <HistoryDetailModal
           decision={selectedDecision}
           isOpen={!!selectedDecision}
