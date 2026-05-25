@@ -37,7 +37,7 @@
 }
 
 .logo span {
-  color: var(--color-primary-dim);
+  color: var(--color-text-sidebar);
   font-size: 24px;
 }
 
@@ -45,7 +45,7 @@
   font-family: var(--font-headline);
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-surface-white);
+  color: var(--color-text-sidebar);
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
@@ -87,13 +87,13 @@
 
 .navItem:hover {
   background-color: var(--color-sidebar-hover);
-  color: var(--color-surface-white);
+  color: var(--color-text-sidebar);
   opacity: 1;
 }
 
 .navItem.active {
   background-color: var(--color-sidebar-hover);
-  color: var(--color-surface-white);
+  color: var(--color-text-sidebar);
   opacity: 1;
   border-left-color: var(--color-primary-hover);
 }
@@ -116,11 +116,9 @@
   border-radius: var(--radius-md);
 }
 
-.userProfile img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.avatar {
+  font-size: 36px;
+  color: var(--color-text-sidebar);
   flex-shrink: 0;
 }
 
@@ -131,7 +129,7 @@
 .userName {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-surface-white);
+  color: var(--color-text-sidebar);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

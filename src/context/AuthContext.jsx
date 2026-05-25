@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
-import { getMe, loginUser, logoutUser } from "../services/api.js";
+import { getMe, loginUser, logoutUser, updateProfile } from "../services/api.js";
 import { authReducer, initialState } from "./authReducer.js";
 
 export const AuthContext = createContext(null);
@@ -44,6 +44,15 @@ export function AuthProvider({ children }) {
     dispatch({ type: "SET_ERROR", payload: message });
   };
 
+  const updateAvatar = async (avatar_style) => {
+    try {
+      const data = await updateProfile({ avatar_style });
+      dispatch({ type: "SET_USER", payload: data.user });
+    } catch (error) {
+      console.error("updateAvatar error:", error.message);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -56,6 +65,7 @@ export function AuthProvider({ children }) {
         logout,
         setError,
         refreshSession,
+        updateAvatar,
       }}
     >
       {children}

@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  decideTransaction,
-  getChallengeRecommendation,
-} from "../../services/api.js";
+import {decideTransaction,getChallengeRecommendation} from "../../services/api.js";
 import VerdictForm from "./VerdictForm.jsx";
 import ClientModal from "./ClientModal.jsx";
 import styles from "./TransactionDetailPanel.module.css";
@@ -15,9 +12,12 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
   const [clientModalOpen, setClientModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!transaction || decision) return;
+    setDecision(null);
+    setChallenge(null);
+    setError("");
+    if (!transaction) return;
     fetchMLData();
-  }, [transaction, decision]);
+  }, [transaction]);
 
   const fetchMLData = async () => {
     try {
@@ -75,7 +75,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
       {/* Columna izquierda — Datos de la transacción */}
       <div className={styles.leftColumn}>
         <div className={styles.sectionHeader}>
-          <h3>Transaction Context</h3>
+          <h3>{transaction.transaction_id}</h3>
           <button
             className={styles.clientBtn}
             onClick={() => setClientModalOpen(true)}

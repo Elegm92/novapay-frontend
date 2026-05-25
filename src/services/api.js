@@ -17,10 +17,10 @@ const request = async (callback) => {
 };
 
 // Auth
-export const loginUser = (payload) =>
-  request(() => api.post("/api/auth/login", payload));
+export const loginUser = (payload) => request(() => api.post("/api/auth/login", payload));
 export const logoutUser = () => request(() => api.post("/api/auth/logout"));
 export const getMe = () => request(() => api.get("/api/auth/me"));
+export const updateProfile = (payload) => request(() => api.patch("/api/auth/profile", payload));
 
 // Transactions
 export const getQueue = (params) =>
@@ -32,12 +32,9 @@ export const createDecision = (payload) =>
   request(() => api.post("/api/decisions", payload));
 
 // Fraud DS (via nuestro back)
-export const decideTransaction = (payload) =>
-  request(() => api.post("/api/fraud/decide", payload));
-export const getChallengeRecommendation = (payload) =>
-  request(() => api.post("/api/fraud/challenge", payload));
-export const sendFeedback = (payload) =>
-  request(() => api.post("/api/fraud/feedback", payload));
+export const decideTransaction = (payload) =>  request(() => api.post("/api/fraud/decide", payload));
+export const getChallengeRecommendation = (payload) => request(() => api.post("/api/fraud/challenge", payload));
+export const sendFeedback = (payload) =>  request(() => api.post("/api/fraud/feedback", payload));
 
 // Stats
 export const getDashboardStats = () => request(() => api.get("/api/stats"));
