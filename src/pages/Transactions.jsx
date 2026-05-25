@@ -4,6 +4,7 @@ import Layout from "../components/shared/Layout.jsx";
 import TransactionTable from "../components/transactions/TransactionTable.jsx";
 import TransactionDetailPanel from "../components/transactions/TransactionDetailPanel.jsx";
 import styles from "./Transactions.module.css";
+import CustomSelect from "../components/shared/CustomSelect.jsx";
 
 const LIMIT = 50;
 
@@ -43,6 +44,7 @@ const Transactions = () => {
 
   const handleRefresh = () => {
     setOffset(0);
+    setSelectedTransaction(null);
     fetchQueue();
   };
 
@@ -172,35 +174,39 @@ const Transactions = () => {
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
             <label>Risk Level</label>
-            <select
+            <CustomSelect
               value={filters.risk_level}
-              onChange={(e) => {
+              onChange={(val) => {
                 setOffset(0);
-                setFilters({ ...filters, risk_level: e.target.value });
+                setFilters({ ...filters, risk_level: val });
               }}
-            >
-              <option value="">All Risks</option>
-              <option value="high">High Risk</option>
-              <option value="medium">Medium Risk</option>
-              <option value="low">Low Risk</option>
-            </select>
+              placeholder="All Risks"
+              options={[
+                { value: "", label: "All Risks" },
+                { value: "high", label: "High Risk" },
+                { value: "medium", label: "Medium Risk" },
+                { value: "low", label: "Low Risk" },
+              ]}
+            />
           </div>
           <div className={styles.filterGroup}>
             <label>Transaction Type</label>
-            <select
+            <CustomSelect
               value={filters.type}
-              onChange={(e) => {
+              onChange={(val) => {
                 setOffset(0);
-                setFilters({ ...filters, type: e.target.value });
+                setFilters({ ...filters, type: val });
               }}
-            >
-              <option value="">All Types</option>
-              <option value="TRANSFER">TRANSFER</option>
-              <option value="CASH_OUT">CASH_OUT</option>
-              <option value="PAYMENT">PAYMENT</option>
-              <option value="DEBIT">DEBIT</option>
-              <option value="CASH_IN">CASH_IN</option>
-            </select>
+              placeholder="All Types"
+              options={[
+                { value: "", label: "All Types" },
+                { value: "TRANSFER", label: "TRANSFER" },
+                { value: "CASH_OUT", label: "CASH_OUT" },
+                { value: "PAYMENT", label: "PAYMENT" },
+                { value: "DEBIT", label: "DEBIT" },
+                { value: "CASH_IN", label: "CASH_IN" },
+              ]}
+            />
           </div>
         </div>
 
