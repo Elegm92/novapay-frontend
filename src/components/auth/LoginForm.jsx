@@ -32,111 +32,126 @@ function LoginForm() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.wrapper}>
-        {/* Brand */}
-        <div className={styles.brand}>
-          <h1 className={styles.brandTitle}>Sentinel NovaPay</h1>
-          <p className={styles.brandSub}>Fraud Analysis Unit</p>
-        </div>
+      {/* Orbs */}
+      <div className={styles.orb1} />
+      <div className={styles.orb2} />
+      <div className={styles.orb3} />
 
-        {/* Card */}
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Portal Access</h2>
-            <p className={styles.cardSubtitle}>
-              Enter your credentials to access the secure surveillance
-              dashboard.
-            </p>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.headerBrand}>
+          <span className="material-icons" style={{ color: "var(--color-primary)" }}>security</span>
+          <span className={styles.headerTitle}>Sentinel NovaPay</span>
+        </div>
+        <span className={styles.headerVersion}>v4.2.0-PROD</span>
+      </header>
+
+      {/* Main */}
+      <main className={styles.main}>
+        <div className={styles.wrapper}>
+
+          {/* Portal header */}
+          <div className={styles.portalHeader}>
+            <div className={styles.iconBox}>
+              <span className="material-icons" style={{ fontSize: 28, color: "var(--color-primary)" }}>terminal</span>
+            </div>
+            <h1 className={styles.portalTitle}>Portal Access</h1>
           </div>
 
-          <form className={styles.form} onSubmit={handleSubmit}>
-            {/* Email */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label} htmlFor="email">
-                Work Email
-              </label>
-              <div className={styles.inputWrapper}>
-                <span className={`material-icons ${styles.inputIcon}`}>
-                  mail
-                </span>
-                <input
-                  className={styles.input}
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="analyst@novapay.com"
-                  required
-                  autoFocus
-                />
+          {/* Card */}
+          <div className={styles.card}>
+            <div className={styles.cardGlow} />
+
+            <form className={styles.form} onSubmit={handleSubmit}>
+
+              {/* Email */}
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor="email">Operator ID</label>
+                <div className={styles.inputWrapper}>
+                  <span className={`material-icons ${styles.inputIcon}`}>mail</span>
+                  <input
+                    className={styles.input}
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="analyst@novapay.com"
+                    required
+                    autoFocus
+                  />
+                </div>
               </div>
+
+              {/* Password */}
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor="password">Access Key</label>
+                <div className={styles.inputWrapper}>
+                  <span className={`material-icons ${styles.inputIcon}`}>key</span>
+                  <input
+                    className={`${styles.input} ${styles.inputMono}`}
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="••••••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className={styles.toggleBtn}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <span className="material-icons">
+                      {showPassword ? "visibility_off" : "visibility"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {error && <p className={styles.error}>{error}</p>}
+
+              <button className={styles.submitBtn} type="submit" disabled={loading}>
+                {loading ? "Authenticating..." : "Initialize Session"}
+                {!loading && <span className="material-icons">arrow_forward</span>}
+              </button>
+
+            </form>
+
+            {/* System message */}
+            <div className={styles.systemMsg}>
+              <span className="material-icons" style={{ fontSize: 16, color: "var(--color-primary)", marginTop: 2 }}>info</span>
+              <p className={styles.systemMsgText}>
+                Access is logged and audited. Multiple failed attempts will trigger a biometric verification lockout.
+              </p>
             </div>
-
-            {/* Password */}
-            <div className={styles.fieldGroup}>
-              <div className={styles.fieldHeader}>
-                <label className={styles.label} htmlFor="password">
-                  Security Key
-                </label>
-              </div>
-              <div className={styles.inputWrapper}>
-                <span className={`material-icons ${styles.inputIcon}`}>
-                  key
-                </span>
-                <input
-                  className={`${styles.input} ${styles.inputMono}`}
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  className={styles.toggleBtn}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <span className="material-icons">
-                    {showPassword ? "visibility_off" : "visibility"}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {error && <p className={styles.error}>{error}</p>}
-
-            <button
-              className={styles.submitBtn}
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Authenticating..." : "Sign In"}
-              {!loading && (
-                <span className="material-icons">arrow_forward</span>
-              )}
-            </button>
-          </form>
-
-          <div className={styles.cardFooter}>
-            <p>
-              Authorized use only. All activities are monitored and logged by
-              the Sentinel NovaPay security protocols.
-            </p>
           </div>
-        </div>
 
-        {/* Status bar */}
-        <div className={styles.statusBar}>
+          {/* Footer note */}
+          <p className={styles.footerNote}>
+            Property of Sentinel Global SecOps. Unauthorized use is strictly prohibited and subject to legal action under Directive 99-A.
+          </p>
+
+        </div>
+      </main>
+
+      {/* Status bar */}
+      <footer className={styles.statusBar}>
+        <div className={styles.statusLeft}>
           <div className={styles.statusIndicator}>
             <span className={styles.statusDot} />
-            <span className={styles.statusText}>Network Secure</span>
+            <span className={styles.statusText}>System Status: NOMINAL</span>
           </div>
-          <span className={styles.statusVersion}>v4.2.0-PROD</span>
+          <span className={styles.statusDivider} />
+          <span className={styles.statusText}>Region: Global-Alpha</span>
         </div>
-      </div>
+        <div className={styles.statusRight}>
+          <span className={styles.statusLink}>Network Secure</span>
+          <span className={styles.statusLink}>System Status</span>
+          <span className={styles.statusLink}>Privacy Protocol</span>
+        </div>
+      </footer>
     </div>
   );
 }

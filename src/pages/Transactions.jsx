@@ -3,6 +3,7 @@ import { getQueue } from "../services/api.js";
 import Layout from "../components/shared/Layout.jsx";
 import TransactionTable from "../components/transactions/TransactionTable.jsx";
 import TransactionDetailPanel from "../components/transactions/TransactionDetailPanel.jsx";
+import Spinner from "../components/shared/Spinner.jsx";
 import styles from "./Transactions.module.css";
 import CustomSelect from "../components/shared/CustomSelect.jsx";
 
@@ -50,30 +51,8 @@ const Transactions = () => {
 
   const handleExportCSV = () => {
     if (!transactions.length) return;
-
-    const headers = [
-      "transaction_id",
-      "amount",
-      "type",
-      "nameOrig",
-      "nameDest",
-      "oldbalanceOrg",
-      "newbalanceOrig",
-      "oldbalanceDest",
-      "newbalanceDest",
-      "ip_country",
-      "merchant_category",
-      "fraud_probability",
-      "risk_level",
-      "decision",
-      "status",
-      "timestamp",
-    ];
-
-    const rows = transactions.map((tx) =>
-      headers.map((h) => tx[h] ?? "").join(","),
-    );
-
+    const headers = ["transaction_id","amount","type","nameOrig","nameDest","oldbalanceOrg","newbalanceOrig","oldbalanceDest","newbalanceDest","ip_country","merchant_category","fraud_probability","risk_level","decision","status","timestamp"];
+    const rows = transactions.map((tx) => headers.map((h) => tx[h] ?? "").join(","));
     const csv = [headers.join(","), ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -86,9 +65,7 @@ const Transactions = () => {
 
   const handleRowClick = (transaction) => {
     setSelectedTransaction(
-      selectedTransaction?.transaction_id === transaction.transaction_id
-        ? null
-        : transaction,
+      selectedTransaction?.transaction_id === transaction.transaction_id ? null : transaction
     );
   };
 
@@ -104,7 +81,7 @@ const Transactions = () => {
         ? tx.decision?.toLowerCase() === "block"
         : activeTab === "legitimate"
           ? tx.decision?.toLowerCase() === "allow"
-          : true,
+          : true
   );
 
   const totalPages = Math.ceil(total / LIMIT);
@@ -113,7 +90,6 @@ const Transactions = () => {
   return (
     <Layout>
       <div className={styles.container}>
-        {/* Header */}
         <div className={styles.pageHeader}>
           <div className={styles.headerText}>
             <h2>Transaction Monitoring</h2>
@@ -124,43 +100,23 @@ const Transactions = () => {
               <span className="material-icons">refresh</span>
               Refresh Feed
             </button>
-            <button
-              className={styles.exportBtn}
-              onClick={handleExportCSV}
-              disabled={!transactions.length}
-            >
+            <button className={styles.exportBtn} onClick={handleExportCSV} disabled={!transactions.length}>
               <span className="material-icons">download</span>
               Export CSV
             </button>
           </div>
         </div>
 
-        {/* Tabs */}
         <div className={styles.tabs}>
           {[
-            {
-              key: "pending",
-              label: "Pending",
-              filter: (tx) => tx.status === "pending",
-            },
-            {
-              key: "blocked",
-              label: "Blocked",
-              filter: (tx) => tx.decision?.toLowerCase() === "block",
-            },
-            {
-              key: "legitimate",
-              label: "Legitimate",
-              filter: (tx) => tx.decision?.toLowerCase() === "allow",
-            },
+            { key: "pending", label: "Pending", filter: (tx) => tx.status === "pending" },
+            { key: "blocked", label: "Blocked", filter: (tx) => tx.decision?.toLowerCase() === "block" },
+            { key: "legitimate", label: "Legitimate", filter: (tx) => tx.decision?.toLowerCase() === "allow" },
           ].map((tab) => (
             <button
               key={tab.key}
               className={`${styles.tab} ${activeTab === tab.key ? styles.activeTab : ""}`}
-              onClick={() => {
-                setActiveTab(tab.key);
-                setSelectedTransaction(null);
-              }}
+              onClick={() => { setActiveTab(tab.key); setSelectedTransaction(null); }}
             >
               {tab.label}
               <span className={styles.tabBadge}>
@@ -170,22 +126,17 @@ const Transactions = () => {
           ))}
         </div>
 
-        {/* Filters */}
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
             <label>Risk Level</label>
             <CustomSelect
               value={filters.risk_level}
-              onChange={(val) => {
-                setOffset(0);
-                setFilters({ ...filters, risk_level: val });
-              }}
-              placeholder="All Risks"
+              onChange={(val) => setFilters({ ...filters, risk_level: val })}
               options={[
                 { value: "", label: "All Risks" },
-                { value: "high", label: "High Risk" },
-                { value: "medium", label: "Medium Risk" },
-                { value: "low", label: "Low Risk" },
+                { value: "high", label: "High" },
+                { value: "medium", label: "Medium" },
+                { value: "low", label: "Low" },
               ]}
             />
           </div>
@@ -193,67 +144,56 @@ const Transactions = () => {
             <label>Transaction Type</label>
             <CustomSelect
               value={filters.type}
-              onChange={(val) => {
-                setOffset(0);
-                setFilters({ ...filters, type: val });
-              }}
-              placeholder="All Types"
+              onChange={(val) => setFilters({ ...filters, type: val })}
               options={[
                 { value: "", label: "All Types" },
-                { value: "TRANSFER", label: "TRANSFER" },
-                { value: "CASH_OUT", label: "CASH_OUT" },
-                { value: "PAYMENT", label: "PAYMENT" },
-                { value: "DEBIT", label: "DEBIT" },
-                { value: "CASH_IN", label: "CASH_IN" },
+                { value: "TRANSFER", label: "Transfer" },
+                { value: "CASH_OUT", label: "Cash Out" },
+                { value: "PAYMENT", label: "Payment" },
+                { value: "DEBIT", label: "Debit" },
+                { value: "CASH_IN", label: "Cash In" },
               ]}
             />
           </div>
         </div>
 
-        {/* Tabla + Panel */}
         {error && <div className={styles.error}>{error}</div>}
+
         {loading ? (
-          <div className={styles.loading}>Loading transactions...</div>
+          <Spinner />
         ) : (
           <>
-            {visibleTransactions.length === 0 ? (
-              <div className={styles.emptyState}>No transactions found.</div>
-            ) : (
-              <TransactionTable
-                transactions={visibleTransactions}
-                onRowClick={handleRowClick}
-                expandedId={selectedTransaction?.transaction_id}
-              />
-            )}
-
-            {/* Paginación */}
-            {total > LIMIT && (
-              <div className={styles.pagination}>
-                <button
-                  className={styles.pageBtn}
-                  onClick={() => setOffset(Math.max(0, offset - LIMIT))}
-                  disabled={offset === 0}
-                >
-                  <span className="material-icons">chevron_left</span>
-                </button>
-                <span className={styles.pageInfo}>
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  className={styles.pageBtn}
-                  onClick={() => setOffset(offset + LIMIT)}
-                  disabled={offset + LIMIT >= total}
-                >
-                  <span className="material-icons">chevron_right</span>
-                </button>
-              </div>
-            )}
+            <TransactionTable
+              transactions={visibleTransactions}
+              onRowClick={handleRowClick}
+              selectedId={selectedTransaction?.transaction_id}
+            />
 
             {selectedTransaction && (
               <TransactionDetailPanel
                 transaction={selectedTransaction}
                 onClose={handleVerdictClose}
               />
+            )}
+
+            {totalPages > 1 && (
+              <div className={styles.pagination}>
+                <button
+                  className={styles.pageBtn}
+                  onClick={() => setOffset(offset - LIMIT)}
+                  disabled={offset === 0}
+                >
+                  <span className="material-icons">chevron_left</span>
+                </button>
+                <span className={styles.pageInfo}>{currentPage} / {totalPages}</span>
+                <button
+                  className={styles.pageBtn}
+                  onClick={() => setOffset(offset + LIMIT)}
+                  disabled={currentPage >= totalPages}
+                >
+                  <span className="material-icons">chevron_right</span>
+                </button>
+              </div>
             )}
           </>
         )}

@@ -2,7 +2,44 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: #0c1220;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Dot grid ── */
+.layout::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(#1f2937 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Orb 1 ── */
+.layout::after {
+  content: '';
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  top: -200px;
+  right: -100px;
+  pointer-events: none;
+  z-index: 0;
+  animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0px) translateX(0px); }
+  50%  { transform: translateY(-30px) translateX(20px); }
+  100% { transform: translateY(0px) translateX(0px); }
 }
 
 .main {
@@ -10,13 +47,13 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
-
-  /* Mobile: sin sidebar */
   margin-left: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .content {
-  margin-top: 64px; /* header height */
+  margin-top: 64px;
   padding: 16px;
   flex: 1;
 }
@@ -31,7 +68,7 @@
 /* ── Desktop ── */
 @media (min-width: 1024px) {
   .main {
-    margin-left: 280px; /* sidebar width */
+    margin-left: 280px;
   }
 
   .content {
