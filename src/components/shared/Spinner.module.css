@@ -1,0 +1,24 @@
+.containerLoad {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  border-bottom: 5px dotted var(--color-primary);
+  border-left-color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { rotate: 0deg; }
+  100% { rotate: 360deg; }
+}

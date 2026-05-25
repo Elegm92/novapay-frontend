@@ -4,6 +4,7 @@ import Layout from "../components/shared/Layout.jsx";
 import HistoryTable from "../components/history/HistoryTable.jsx";
 import HistoryDetailModal from "../components/history/HistoryDetailModal.jsx";
 import KPICard from "../components/shared/KPICard.jsx";
+import Spinner from "../components/shared/Spinner.jsx";
 import styles from "./History.module.css";
 
 const History = () => {
@@ -52,50 +53,26 @@ const History = () => {
   return (
     <Layout>
       <div className={styles.container}>
-        {/* Header */}
         <div className={styles.pageHeader}>
           <h2>Decision History</h2>
           <p>Review all past verdicts and analyst rationales.</p>
         </div>
 
-        {/* Tarjetas de resumen */}
         <section className={styles.kpiGrid}>
-          <KPICard
-            label="Total Approved"
-            value={stats?.total_approved ?? "—"}
-            icon="check_circle"
-          />
-          <KPICard
-            label="Total Blocked"
-            value={stats?.total_blocked ?? "—"}
-            icon="block"
-          />
-          <KPICard
-            label="Manual Flags"
-            value={stats?.manual_flags ?? "—"}
-            icon="flag"
-          />
+          <KPICard label="Total Approved" value={stats?.total_approved ?? "—"} icon="check_circle" />
+          <KPICard label="Total Blocked" value={stats?.total_blocked ?? "—"} icon="block" />
+          <KPICard label="Manual Flags" value={stats?.manual_flags ?? "—"} icon="flag" />
           <KPICard
             label="Avg. Resolve Time"
-            value={
-              stats?.avg_resolve_time_minutes != null
-                ? `${stats.avg_resolve_time_minutes} min`
-                : "—"
-            }
+            value={stats?.avg_resolve_time_minutes != null ? `${stats.avg_resolve_time_minutes} min` : "—"}
             icon="timer"
           />
         </section>
 
-        {/* Filters */}
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
             <label>Verdict</label>
-            <select
-              value={filters.verdict}
-              onChange={(e) =>
-                setFilters({ ...filters, verdict: e.target.value })
-              }
-            >
+            <select value={filters.verdict} onChange={(e) => setFilters({ ...filters, verdict: e.target.value })}>
               <option value="">All Verdicts</option>
               <option value="fraud">Fraud</option>
               <option value="legitimate">Legitimate</option>
@@ -103,33 +80,19 @@ const History = () => {
           </div>
           <div className={styles.filterGroup}>
             <label>From</label>
-            <input
-              type="date"
-              value={filters.dateFrom}
-              onChange={(e) =>
-                setFilters({ ...filters, dateFrom: e.target.value })
-              }
-            />
+            <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })} />
           </div>
           <div className={styles.filterGroup}>
             <label>To</label>
-            <input
-              type="date"
-              value={filters.dateTo}
-              onChange={(e) =>
-                setFilters({ ...filters, dateTo: e.target.value })
-              }
-            />
+            <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })} />
           </div>
-          <button className={styles.filterBtn} onClick={fetchDecisions}>
-            Apply Filters
-          </button>
+          <button className={styles.filterBtn} onClick={fetchDecisions}>Apply Filters</button>
         </div>
 
-        {/* Tabla */}
         {error && <div className={styles.error}>{error}</div>}
+
         {loading ? (
-          <div className={styles.loading}>Loading decisions...</div>
+          <Spinner />
         ) : decisions.length === 0 ? (
           <div className={styles.emptyState}>No decisions found.</div>
         ) : (

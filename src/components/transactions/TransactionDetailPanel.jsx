@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {decideTransaction,getChallengeRecommendation} from "../../services/api.js";
 import VerdictForm from "./VerdictForm.jsx";
 import ClientModal from "./ClientModal.jsx";
+import Spinner from "../shared/Spinner.jsx";
 import styles from "./TransactionDetailPanel.module.css";
 
 const TransactionDetailPanel = ({ transaction, onClose }) => {
@@ -149,7 +150,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
       <div className={styles.rightColumn}>
         {error && <div className={styles.error}>{error}</div>}
         {loading ? (
-          <div className={styles.loading}>Loading ML analysis...</div>
+          <Spinner />
         ) : (
           <>
             {decision && (

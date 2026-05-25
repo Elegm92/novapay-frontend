@@ -7,6 +7,7 @@ import RiskMap from "../components/dashboard/RiskMap.jsx";
 import KPICard from "../components/shared/KPICard.jsx";
 import DetectionBenchmark from "../components/dashboard/DetectionBenchmark.jsx";
 import styles from "./Dashboard.module.css";
+import Spinner from "../components/shared/Spinner.jsx";
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -28,8 +29,8 @@ function Dashboard() {
     fetchStats();
   }, []);
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+if (loading) return <Spinner />;  
+if (error) return <p>Error: {error}</p>;
 
   return (
     <Layout>

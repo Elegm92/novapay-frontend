@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createDecision } from "../../services/api.js";
+import Swal from "sweetalert2";
 import styles from "./VerdictForm.module.css";
 
 const VerdictForm = ({ transaction, onClose }) => {
@@ -9,19 +10,38 @@ const VerdictForm = ({ transaction, onClose }) => {
 
   const handleVerdict = async (verdict) => {
     if (!notes.trim()) {
-      setError("Notes are mandatory before submitting a verdict.");
+      setError("Las notas son obligatorias antes de enviar un veredicto.");
       return;
     }
     if (!transaction?.transaction_id) {
-      setError("Transaction ID not available.");
+      setError("ID de transacción no disponible.");
       return;
     }
+
+    const isLegitimate = verdict === "legitimate";
+
+    const result = await Swal.fire({
+      title: isLegitimate ? "¿Aprobar transacción?" : "¿Confirmar fraude?",
+      text: isLegitimate
+        ? "Marcarás esta transacción como legítima. Esta acción quedará registrada."
+        : "Marcarás esta transacción como fraudulenta. Esta acción quedará registrada.",
+      icon: isLegitimate ? "success" : "warning",
+      showCancelButton: true,
+      confirmButtonText: isLegitimate ? "Sí, aprobar" : "Sí, bloquear",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: isLegitimate ? "#006c49" : "#ef4444",
+      cancelButtonColor: "#1f2937",
+      background: "#111827",
+      color: "#eef0ff",
+      iconColor: isLegitimate ? "#006c49" : "#ef4444",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       setLoading(true);
       setError("");
 
-      // Guardar en nuestra BD
       await createDecision({
         transaction_id: transaction.transaction_id,
         verdict,
@@ -31,7 +51,7 @@ const VerdictForm = ({ transaction, onClose }) => {
       onClose();
     } catch (error) {
       console.error("Error submitting verdict:", error);
-      setError("Failed to submit verdict. Please try again.");
+      setError("Error al enviar el veredicto. Por favor, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -43,11 +63,11 @@ const VerdictForm = ({ transaction, onClose }) => {
 
       <div className={styles.inputGroup}>
         <label>
-          Analyst Notes <span className={styles.required}>*</span>
+          Notas del analista <span className={styles.required}>*</span>
         </label>
         <textarea
           className={styles.textarea}
-          placeholder="Explain your decision (Mandatory)..."
+          placeholder="Explica tu decisión antes de confirmar (obligatorio)..."
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={4}
@@ -62,14 +82,14 @@ const VerdictForm = ({ transaction, onClose }) => {
           onClick={() => handleVerdict("fraud")}
           disabled={loading || !notes.trim()}
         >
-          {loading ? "Submitting..." : "Confirm Fraud"}
+          {loading ? "Enviando..." : "Confirmar Fraude"}
         </button>
         <button
           className={styles.legitimateBtn}
           onClick={() => handleVerdict("legitimate")}
           disabled={loading || !notes.trim()}
         >
-          {loading ? "Submitting..." : "Approve Legitimate"}
+          {loading ? "Enviando..." : "Aprobar Legítima"}
         </button>
       </div>
     </div>

@@ -55,7 +55,7 @@
 .hero h2 {
   font-size: 28px;
   font-weight: 700;
-  color: var(--color-surface);
+  color: var(--color-text);
   margin: 0;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -63,7 +63,7 @@
 
 .hero p {
   font-size: 16px;
-  color: var(--color-surface);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.5;
 }
@@ -128,11 +128,15 @@
   }
 
   .bottomGrid {
-    flex-direction: row;
-    align-items: flex-start;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+  .bottomGrid > *:first-child {
+    flex: 1.2;
   }
 
-  .bottomGrid > * {
+  .bottomGrid > *:last-child {
     flex: 1;
   }
 }

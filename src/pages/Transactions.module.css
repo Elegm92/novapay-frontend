@@ -158,7 +158,7 @@
 
 .filterGroup select {
   padding: 9px 12px;
-  background: var(--color-surface-white);
+  background-color: var(--color-surface-high);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: 13px;
@@ -166,6 +166,7 @@
   transition: var(--transition);
   appearance: none;
   cursor: pointer;
+  color-scheme: dark;
 }
 
 .filterGroup select:focus {
