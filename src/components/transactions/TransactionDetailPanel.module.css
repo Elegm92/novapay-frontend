@@ -25,6 +25,7 @@
   flex-direction: column;
   gap: 12px;
   margin-bottom: 20px;
+  min-width: 0;
 }
 
 .sectionHeader h3 {
@@ -46,7 +47,6 @@
   font-size: 12px;
   font-weight: 600;
   transition: var(--transition);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
@@ -225,6 +225,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    min-width: 0;
   }
 
   .dataGrid {

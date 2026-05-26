@@ -34,7 +34,7 @@ const Transactions = () => {
         offset,
       });
       setTransactions(data.queue || []);
-      setTotal(data.total || 0);
+      setTotal(data.total_pending || data.total || 0);
     } catch (error) {
       console.error("Error fetching queue:", error);
       setError("Failed to load transactions.");
@@ -64,10 +64,15 @@ const Transactions = () => {
   };
 
   const handleRowClick = (transaction) => {
-    setSelectedTransaction(
-      selectedTransaction?.transaction_id === transaction.transaction_id ? null : transaction
-    );
-  };
+  setSelectedTransaction(
+    selectedTransaction?.transaction_id === transaction.transaction_id ? null : transaction
+  );
+  
+  // Scroll al panel de detalle
+  setTimeout(() => {
+    document.getElementById("detail-panel")?.scrollIntoView({ behavior: "smooth" });
+  }, 100);
+};
 
   const handleVerdictClose = () => {
     setSelectedTransaction(null);
