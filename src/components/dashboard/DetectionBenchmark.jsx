@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { previewThreshold } from "../../services/api.js";
+import Spinner from "../shared/Spinner.jsx";
 import styles from "./DetectionBenchmark.module.css";
 
 function DetectionBenchmark() {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetchBenchmark();
+  }, []);
 
   const fetchBenchmark = async () => {
     try {
       setLoading(true);
+      setError(false);
       const result = await previewThreshold({
         threshold_block: 0.8,
         threshold_review: 0.5,
@@ -18,17 +25,14 @@ function DetectionBenchmark() {
       setData(result);
     } catch (err) {
       console.error("Benchmark error:", err.message);
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!data && !loading) {
-    fetchBenchmark();
-  }
-
-  if (loading) return <div className={styles.loading}>Loading benchmark...</div>;
-  if (!data?.comparison) return null;
+  if (loading) return <Spinner />;
+  if (error || !data?.comparison) return null;
 
   const r1 = data.comparison.round_1;
   const r2 = data.comparison.round_2;
@@ -74,11 +78,15 @@ function DetectionBenchmark() {
       <div className={styles.metrics}>
         <div className={styles.metric}>
           <span>Precision R1</span>
-          <strong>{r1?.precision ? `${(r1.precision * 100).toFixed(1)}%` : "—"}</strong>
+          <strong>
+            {r1?.precision ? `${(r1.precision * 100).toFixed(1)}%` : "—"}
+          </strong>
         </div>
         <div className={styles.metric}>
           <span>Precision R2</span>
-          <strong className={styles.primary}>{r2?.precision ? `${(r2.precision * 100).toFixed(1)}%` : "—"}</strong>
+          <strong className={styles.primary}>
+            {r2?.precision ? `${(r2.precision * 100).toFixed(1)}%` : "—"}
+          </strong>
         </div>
         <div className={styles.metric}>
           <span>F1 R1</span>
@@ -86,7 +94,9 @@ function DetectionBenchmark() {
         </div>
         <div className={styles.metric}>
           <span>F1 R2</span>
-          <strong className={styles.primary}>{r2?.f1 ? `${(r2.f1 * 100).toFixed(1)}%` : "—"}</strong>
+          <strong className={styles.primary}>
+            {r2?.f1 ? `${(r2.f1 * 100).toFixed(1)}%` : "—"}
+          </strong>
         </div>
       </div>
     </article>
