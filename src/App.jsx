@@ -20,9 +20,11 @@ function App() {
           <Route path="/history" element={<History />} />
         </Route>
 
+        {/* Root */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* Fallback */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </AuthProvider>
   );
