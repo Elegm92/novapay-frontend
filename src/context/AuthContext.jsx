@@ -36,7 +36,8 @@ export function AuthProvider({ children }) {
     try {
       await logoutUser();
     } finally {
-       dispatch({ type: "LOGOUT" });
+      dispatch({ type: "LOGOUT" });
+      dispatch({ type: "SET_ERROR", payload: "" });
     }
   };
 
