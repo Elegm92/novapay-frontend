@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getClientProfile } from "../../services/api.js";
+import Spinner from "../shared/Spinner.jsx";
 import styles from "./ClientModal.module.css";
 
 const ClientModal = ({ clientId, isOpen, onClose }) => {
@@ -22,7 +23,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
       setClientData(data);
     } catch (error) {
       console.error("Error fetching client profile:", error);
-      setError("Client profile not available yet.");
+      setError("No se ha podido cargar el perfil del cliente.");
     } finally {
       setLoading(false);
     }
@@ -53,10 +54,10 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                   }`}
                 >
                   {clientData.stats.fraud_rate_historical > 0.5
-                    ? "HIGH RISK"
+                    ? "ALTO RIESGO"
                     : clientData.stats.fraud_rate_historical > 0.2
-                      ? "MEDIUM RISK"
-                      : "LOW RISK"}
+                      ? "RIESGO MEDIO"
+                      : "BAJO RIESGO"}
                 </span>
               )}
             </div>
@@ -68,7 +69,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
 
         {/* Contenido */}
         {loading ? (
-          <div className={styles.loading}>Loading client profile...</div>
+          <Spinner />
         ) : error ? (
           <div className={styles.error}>{error}</div>
         ) : clientData ? (
@@ -76,23 +77,23 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
             {/* Stats */}
             <div className={styles.statsGrid}>
               <div className={styles.statCard}>
-                <p>Total Transactions</p>
+                <p>Total Transacciones</p>
                 <h3>{clientData.stats?.total_transactions ?? "—"}</h3>
               </div>
               <div className={styles.statCard}>
-                <p>Total Volume</p>
+                <p>Volumen Total</p>
                 <h3>
                   €{clientData.stats?.total_volume?.toLocaleString() ?? "—"}
                 </h3>
               </div>
               <div className={styles.statCard}>
-                <p>Avg Amount</p>
+                <p>Importe Medio</p>
                 <h3>
                   €{clientData.stats?.avg_amount?.toLocaleString() ?? "—"}
                 </h3>
               </div>
               <div className={styles.statCard}>
-                <p>Historical Fraud Rate</p>
+                <p>Tasa de Fraude</p>
                 <h3>
                   {clientData.stats?.fraud_rate_historical != null
                     ? `${(clientData.stats.fraud_rate_historical * 100).toFixed(1)}%`
@@ -100,7 +101,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                 </h3>
               </div>
               <div className={styles.statCard}>
-                <p>First Seen</p>
+                <p>Primera Actividad</p>
                 <h3>
                   {clientData.stats?.first_seen
                     ? new Date(clientData.stats.first_seen).toLocaleDateString()
@@ -108,19 +109,27 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                 </h3>
               </div>
               <div className={styles.statCard}>
-                <p>Last Seen</p>
+                <p>Última Actividad</p>
                 <h3>
                   {clientData.stats?.last_seen
                     ? new Date(clientData.stats.last_seen).toLocaleDateString()
                     : "—"}
                 </h3>
               </div>
+              <div className={styles.statCard}>
+                <p>Contrapartes</p>
+                <h3>{clientData.stats?.distinct_counterparties ?? "—"}</h3>
+              </div>
+              <div className={styles.statCard}>
+                <p>Tipo más usado</p>
+                <h3>{clientData.stats?.most_used_type || "—"}</h3>
+              </div>
             </div>
 
             {/* Risk Flags */}
             {clientData.risk_flags?.length > 0 && (
               <div className={styles.riskFlags}>
-                <h4>Risk Flags</h4>
+                <h4>Alertas de Riesgo</h4>
                 <div className={styles.flagsList}>
                   {clientData.risk_flags.map((flag, i) => (
                     <span key={i} className={styles.flag}>
@@ -134,24 +143,22 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
 
             {/* Transacciones recientes */}
             <div className={styles.transactionList}>
-              <h4>Recent Transactions</h4>
+              <h4>Transacciones Recientes</h4>
               <table className={styles.table}>
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Risk</th>
+                    <th>Fecha</th>
+                    <th>Importe</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
                   {visibleTransactions.map((tx) => (
                     <tr
                       key={tx.transaction_id}
-                      className={
-                        tx.risk_level === "high" ? styles.fraudRow : ""
-                      }
+                      className={tx.is_flagged_fraud ? styles.fraudRow : ""}
                     >
                       <td className={styles.monoText}>{tx.transaction_id}</td>
                       <td>
@@ -167,9 +174,11 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                       <td>{tx.type || "—"}</td>
                       <td>
                         <span
-                          className={`${styles.riskBadge} ${styles[tx.risk_level]}`}
+                          className={`${styles.riskBadge} ${
+                            tx.is_flagged_fraud ? styles.high : styles.low
+                          }`}
                         >
-                          {tx.risk_level?.toUpperCase() || "—"}
+                          {tx.is_flagged_fraud ? "FRAUDE" : "LEGÍTIMA"}
                         </span>
                       </td>
                     </tr>
@@ -182,9 +191,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
                   className={styles.showMoreBtn}
                   onClick={() => setShowAll(!showAll)}
                 >
-                  {showAll
-                    ? "Show less"
-                    : `Show all ${transactions.length} transactions`}
+                  {showAll ? "Ver menos" : `Ver todas (${transactions.length})`}
                 </button>
               )}
             </div>
@@ -194,7 +201,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
         {/* Footer */}
         <div className={styles.footer}>
           <button className={styles.closeButton} onClick={onClose}>
-            Close
+            Cerrar
           </button>
         </div>
       </div>
