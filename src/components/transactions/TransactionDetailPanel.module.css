@@ -90,6 +90,77 @@
   word-break: break-all;
 }
 
+/* ── Narrative IA ── */
+.narrativeSection {
+  margin-top: 32px;
+  padding: 16px;
+  background: var(--color-surface-low);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.narrativeSection::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    #6366f1,
+    var(--color-primary),
+    #06b6d4,
+    #6366f1
+  );
+  background-size: 300% 300%;
+  animation: borderGlow 3s linear infinite;
+  z-index: 0;
+}
+
+.narrativeSection::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--color-surface-low);
+  border-radius: calc(var(--radius-lg) - 2px);
+  z-index: 1;
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.narrativeLabel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.narrativeLabel span {
+  font-size: 16px;
+}
+
+.narrativeText {
+  position: relative;
+  z-index: 2;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+  text-align: justify;
+}
+
 /* ── ML Decision ── */
 .decisionSection {
   margin-bottom: 20px;

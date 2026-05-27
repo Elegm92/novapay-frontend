@@ -45,4 +45,8 @@ export const getHistoryStats = () => request(() => api.get("/api/stats/history")
 // Clients
 export const getClientProfile = (nameOrig) => request(() => api.get(`/api/clients/${nameOrig}`));
 
+// IA Explain
+export const explainTransaction = (transactionId) =>
+  request(() => api.get(`/api/fraud/explain/${transactionId}`));
+
 export default api;
