@@ -259,6 +259,8 @@
 .toggleBtn:hover {
   color: var(--color-primary);
   opacity: 1;
+  transform: translateY(-50%);
+  box-shadow: none;
 }
 
 /* ── Submit ── */

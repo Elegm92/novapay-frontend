@@ -292,7 +292,7 @@
   }
 
   .modal {
-    width: 100%;
+    width: 90%;
     max-width: 640px;
     max-height: 85vh;
     border-radius: var(--radius-lg);
@@ -305,7 +305,12 @@
 
 /* ── Desktop ── */
 @media (min-width: 1024px) {
+  .overlay {
+    left: 280px;
+  }
+
   .modal {
+    width: 80%;
     max-width: 720px;
   }
 

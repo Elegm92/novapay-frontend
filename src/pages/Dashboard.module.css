@@ -128,15 +128,24 @@
   }
 
   .bottomGrid {
-  flex-direction: row;
-  align-items: flex-start;
-}
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
 
   .bottomGrid > *:first-child {
-    flex: 1.2;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .bottomGrid > *:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .bottomGrid > *:last-child {
-    flex: 1;
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }

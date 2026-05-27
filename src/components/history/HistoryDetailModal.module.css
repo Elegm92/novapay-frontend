@@ -165,6 +165,7 @@
   cursor: pointer;
 }
 
+/* ── Tablet ── */
 @media (min-width: 768px) {
   .overlay {
     align-items: center;
@@ -172,32 +173,45 @@
   }
 
   .modal {
-    max-width: 720px;
-    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 640px;
     max-height: 85vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .overlay {
+    left: 280px;
+  }
+
+  .modal {
+    width: 80%;
+    max-width: 720px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .header {
-    padding: 24px;
+    padding: 20px 28px;
   }
 
-  .content {
-    padding: 24px;
-    flex-direction: row;
-    gap: 24px;
+  .transactionList {
+    padding: 20px 28px;
   }
 
-  .leftColumn,
-  .rightColumn {
-    flex: 1;
-  }
-}
-@media (min-width: 1024px) {
-  .modal {
-    max-width: 860px;
+  .riskFlags {
+    padding: 16px 28px;
   }
 
-  .dataGrid {
-    grid-template-columns: repeat(3, 1fr);
+  .footer {
+    padding: 16px 28px;
   }
 }

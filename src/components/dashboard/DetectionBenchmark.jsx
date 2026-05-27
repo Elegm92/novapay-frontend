@@ -1,102 +1,147 @@
-import { useState, useEffect } from "react";
-import { previewThreshold } from "../../services/api.js";
-import Spinner from "../shared/Spinner.jsx";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import styles from "./DetectionBenchmark.module.css";
 
+const metricsData = [
+  { metric: "Precision", R1: 94, R2: 99 },
+  { metric: "Recall", R1: 99, R2: 100 },
+  { metric: "F1", R1: 97, R2: 99 },
+];
+
+const detectionData = [
+  { metric: "Detectados", R1: 1631, R2: 1643 },
+  { metric: "Perdidos", R1: 12, R2: 0 },
+  { metric: "Falsas alarmas", R1: 96, R2: 0 },
+];
+
 function DetectionBenchmark() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    fetchBenchmark();
-  }, []);
-
-  const fetchBenchmark = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const result = await previewThreshold({
-        threshold_block: 0.8,
-        threshold_review: 0.5,
-        test_set: "round_2",
-        compare: true,
-      });
-      setData(result);
-    } catch (err) {
-      console.error("Benchmark error:", err.message);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <Spinner />;
-  if (error || !data?.comparison) return null;
-
-  const r1 = data.comparison.round_1;
-  const r2 = data.comparison.round_2;
-
   return (
     <article className={styles.benchmark}>
       <header className={styles.header}>
         <h3>Detection Benchmark</h3>
+        <p className={styles.subtitle}>
+          XGBoost R1 vs R2 — Modelos en producción
+        </p>
       </header>
 
-      <div className={styles.bars}>
-        <div className={styles.barGroup}>
-          <div className={styles.barLabel}>
-            <span>Round 1</span>
-            <span className={styles.value}>
-              {r1?.recall ? `${(r1.recall * 100).toFixed(1)}%` : "—"}
-            </span>
-          </div>
-          <div className={styles.barTrack}>
-            <div
-              className={styles.barFill}
-              style={{ width: r1?.recall ? `${r1.recall * 100}%` : "0%" }}
-            />
-          </div>
+      <div className={styles.charts}>
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>Precision · Recall · F1</h4>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={metricsData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+              <XAxis
+                dataKey="metric"
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+              />
+              <YAxis
+                domain={[80, 100]}
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+                unit="%"
+              />
+              <Tooltip
+                isAnimationActive={false}
+                contentStyle={{
+                  background: "#111827",
+                  border: "1px solid #1f2937",
+                  borderRadius: 4,
+                }}
+                labelStyle={{ color: "#eef0ff" }}
+                formatter={(value) => `${value}%`}
+              />
+              <Legend wrapperStyle={{ fontSize: 12, color: "#9ca3af" }} />
+              <Line
+                type="monotone"
+                dataKey="R1"
+                name="R1 (threshold 0.45)"
+                stroke="#06b6d4"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="R2"
+                name="R2 (threshold 0.80)"
+                stroke="#6366f1"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
-        <div className={styles.barGroup}>
-          <div className={styles.barLabel}>
-            <span className={styles.primary}>Round 2 (Nova AI)</span>
-            <span className={`${styles.value} ${styles.primary}`}>
-              {r2?.recall ? `${(r2.recall * 100).toFixed(1)}%` : "—"}
-            </span>
-          </div>
-          <div className={styles.barTrack}>
-            <div
-              className={`${styles.barFill} ${styles.barFillPrimary}`}
-              style={{ width: r2?.recall ? `${r2.recall * 100}%` : "0%" }}
-            />
-          </div>
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>
+            Detección Real · 1.643 fraudes en test set
+          </h4>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={detectionData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+              <XAxis
+                dataKey="metric"
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+              />
+              <YAxis tick={{ fill: "#9ca3af", fontSize: 12 }} />
+              <Tooltip
+                isAnimationActive={false}
+                contentStyle={{
+                  background: "#111827",
+                  border: "1px solid #1f2937",
+                  borderRadius: 4,
+                }}
+                labelStyle={{ color: "#eef0ff" }}
+                formatter={(value) => `${value}%`}
+              />
+              <Legend wrapperStyle={{ fontSize: 12, color: "#9ca3af" }} />
+              <Line
+                type="monotone"
+                dataKey="R1"
+                name="R1 (threshold 0.45)"
+                stroke="#06b6d4"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="R2"
+                name="R2 (threshold 0.80)"
+                stroke="#6366f1"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
-      <div className={styles.metrics}>
-        <div className={styles.metric}>
-          <span>Precision R1</span>
-          <strong>
-            {r1?.precision ? `${(r1.precision * 100).toFixed(1)}%` : "—"}
-          </strong>
+      <div className={styles.summary}>
+        <div className={styles.summaryCard}>
+          <p className={styles.summaryLabel}>R1 — Fraude obvio</p>
+          <p className={styles.summaryValue}>
+            12 <span>perdidos</span>
+          </p>
+          <p className={styles.summaryValue}>
+            96 <span>falsas alarmas</span>
+          </p>
+          <p className={styles.summaryThreshold}>Threshold: 0.45</p>
         </div>
-        <div className={styles.metric}>
-          <span>Precision R2</span>
-          <strong className={styles.primary}>
-            {r2?.precision ? `${(r2.precision * 100).toFixed(1)}%` : "—"}
-          </strong>
-        </div>
-        <div className={styles.metric}>
-          <span>F1 R1</span>
-          <strong>{r1?.f1 ? `${(r1.f1 * 100).toFixed(1)}%` : "—"}</strong>
-        </div>
-        <div className={styles.metric}>
-          <span>F1 R2</span>
-          <strong className={styles.primary}>
-            {r2?.f1 ? `${(r2.f1 * 100).toFixed(1)}%` : "—"}
-          </strong>
+        <div className={`${styles.summaryCard} ${styles.summaryCardHighlight}`}>
+          <p className={styles.summaryLabel}>R2 — Fraude sigiloso</p>
+          <p className={styles.summaryValue}>
+            0 <span>perdidos</span>
+          </p>
+          <p className={styles.summaryValue}>
+            0 <span>falsas alarmas</span>
+          </p>
+          <p className={styles.summaryThreshold}>Threshold: 0.80</p>
         </div>
       </div>
     </article>
