@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  decideTransaction,
-  getChallengeRecommendation,
-} from "../../services/api.js";
+import { decideTransaction, getChallengeRecommendation, explainTransaction } from "../../services/api.js";
 import VerdictForm from "./VerdictForm.jsx";
 import ClientModal from "./ClientModal.jsx";
 import Spinner from "../shared/Spinner.jsx";
@@ -11,6 +8,7 @@ import styles from "./TransactionDetailPanel.module.css";
 const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
   const [decision, setDecision] = useState(null);
   const [challenge, setChallenge] = useState(null);
+  const [narrative, setNarrative] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [clientModalOpen, setClientModalOpen] = useState(false);
@@ -18,10 +16,11 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
   useEffect(() => {
     setDecision(null);
     setChallenge(null);
+    setNarrative(null);
     setError("");
     if (!transaction) return;
     fetchMLData();
-  }, [transaction]);
+  }, [transaction?.transaction_id]);
 
   const fetchMLData = async () => {
     try {
@@ -63,6 +62,15 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
         },
       });
       setChallenge(challengeData);
+
+      // Llamada a la IA
+      try {
+        const explainData = await explainTransaction(transaction.transaction_id);
+        setNarrative(explainData.narrative);
+      } catch {
+        // Si la IA falla no bloqueamos el resto
+      }
+
     } catch (error) {
       console.error("Error fetching ML data:", error);
       setError("Could not load model analysis.");
@@ -154,6 +162,17 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
             </p>
           </div>
         </div>
+
+        {/* Análisis IA */}
+        {narrative && (
+          <div className={styles.narrativeSection}>
+            <p className={styles.narrativeLabel}>
+              <span className="material-icons">smart_toy</span>
+              Análisis IA
+            </p>
+            <p className={styles.narrativeText}>{narrative}</p>
+          </div>
+        )}
       </div>
 
       {/* Columna derecha — ML */}
@@ -167,9 +186,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
               <div className={styles.decisionSection}>
                 <h3>ML Decision</h3>
                 <div className={styles.decisionBadge}>
-                  <span
-                    className={`${styles.decision} ${styles[decision.decision]}`}
-                  >
+                  <span className={`${styles.decision} ${styles[decision.decision]}`}>
                     {decision.decision?.toUpperCase()}
                   </span>
                   <span className={styles.probability}>
@@ -184,13 +201,9 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
             {challenge && (
               <div className={styles.challengeSection}>
                 <h3>Friction Recommendation</h3>
-                <div
-                  className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}
-                >
+                <div className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}>
                   <span className="material-icons">
-                    {challenge.primary_option?.friction === "high"
-                      ? "block"
-                      : "warning"}
+                    {challenge.primary_option?.friction === "high" ? "block" : "warning"}
                   </span>
                   <span>{challenge.recommended_action?.toUpperCase()}</span>
                 </div>
