@@ -20,30 +20,27 @@ const History = () => {
   const [selectedDecision, setSelectedDecision] = useState(null);
 
   useEffect(() => {
-    fetchDecisions();
-    fetchStats();
+    fetchData();
   }, []);
 
-  const fetchDecisions = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
       setError("");
-      const data = await getDecisions(filters);
-      setDecisions(data || []);
+
+      const [decisionsData, statsData] = await Promise.all([
+        getDecisions(filters),
+        getHistoryStats(),
+      ]);
+
+      setDecisions(decisionsData || []);
+      setStats(statsData);
+
     } catch (error) {
       console.error("Error fetching decisions:", error);
       setError("Failed to load decision history.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const data = await getHistoryStats();
-      setStats(data);
-    } catch (error) {
-      console.error("Error fetching history stats:", error);
     }
   };
 
@@ -111,7 +108,7 @@ const History = () => {
               }
             />
           </div>
-          <button className={styles.filterBtn} onClick={fetchDecisions}>
+          <button className={styles.filterBtn} onClick={fetchData}>
             Aplicar Filtros
           </button>
         </div>

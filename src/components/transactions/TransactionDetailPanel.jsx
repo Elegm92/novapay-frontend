@@ -26,7 +26,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
     try {
       setLoading(true);
       setError("");
-      const decisionData = await decideTransaction({
+      const transactionPayload = {
         transaction_id: transaction.transaction_id,
         step: transaction.step,
         type: transaction.type,
@@ -39,37 +39,26 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
         newbalanceDest: transaction.newbalanceDest,
         merchant_category: transaction.merchant_category,
         ip_country: transaction.ip_country,
-      });
-      setDecision(decisionData);
+      };
 
-      const challengeData = await getChallengeRecommendation({
-        transaction_id: transaction.transaction_id,
-        fraud_probability: decisionData.fraud_probability,
-        risk_level: decisionData.risk_level,
-        transaction_context: {
+      // Llamadas principales en paralelo
+      const [decisionData, challengeData] = await Promise.all([
+        decideTransaction(transactionPayload),
+        getChallengeRecommendation({
           transaction_id: transaction.transaction_id,
-          step: transaction.step,
-          type: transaction.type,
-          amount: transaction.amount,
-          nameOrig: transaction.nameOrig,
-          oldbalanceOrg: transaction.oldbalanceOrg,
-          newbalanceOrig: transaction.newbalanceOrig,
-          nameDest: transaction.nameDest,
-          oldbalanceDest: transaction.oldbalanceDest,
-          newbalanceDest: transaction.newbalanceDest,
-          merchant_category: transaction.merchant_category,
-          ip_country: transaction.ip_country,
-        },
-      });
+          fraud_probability: transaction.fraud_probability ?? null,
+          risk_level: transaction.risk_level ?? null,
+          transaction_context: transactionPayload,
+        }),
+      ]);
+
+      setDecision(decisionData);
       setChallenge(challengeData);
 
       // Llamada a la IA
-      try {
-        const explainData = await explainTransaction(transaction.transaction_id);
-        setNarrative(explainData.narrative);
-      } catch {
-        // Si la IA falla no bloqueamos el resto
-      }
+      explainTransaction(transaction.transaction_id)
+        .then((explainData) => setNarrative(explainData.narrative))
+        .catch(() => {});
 
     } catch (error) {
       console.error("Error fetching ML data:", error);

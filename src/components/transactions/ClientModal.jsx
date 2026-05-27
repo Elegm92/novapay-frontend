@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getClientProfile } from "../../services/api.js";
 import Spinner from "../shared/Spinner.jsx";
 import styles from "./ClientModal.module.css";
@@ -8,6 +8,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const cache = useRef({});
 
   useEffect(() => {
     if (isOpen && clientId) {
@@ -16,10 +17,18 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
   }, [isOpen, clientId]);
 
   const fetchClientProfile = async () => {
+
+    if (cache.current[clientId]) {
+      setClientData(cache.current[clientId]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
       const data = await getClientProfile(clientId);
+      cache.current[clientId] = data;
       setClientData(data);
     } catch (error) {
       console.error("Error fetching client profile:", error);
