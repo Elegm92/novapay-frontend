@@ -3,8 +3,8 @@ import { previewThreshold } from "../../services/api.js";
 import styles from "./ThresholdSimulator.module.css";
 
 function ThresholdSimulator() {
-  const [thresholdBlock, setThresholdBlock] = useState(0.8);
-  const [thresholdReview, setThresholdReview] = useState(0.5);
+  const [thresholdBlock, setThresholdBlock] = useState(0.75);
+  const [thresholdReview, setThresholdReview] = useState(0.45);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,13 @@ function ThresholdSimulator() {
 
       <section className={styles.sliders}>
         <section className={styles.sliderGroup}>
-          <label>Block threshold: {thresholdBlock}</label>
+          <label>
+            <span>BLOCK THRESHOLD</span>
+            <span className={styles.sliderValue}>
+              {thresholdBlock.toFixed(2)}
+            </span>
+          </label>
+          <p className={styles.sliderHint}>Bloqueadas: 0.75 – 1.00</p>
           <input
             type="range"
             min="0"
@@ -44,7 +50,15 @@ function ThresholdSimulator() {
           />
         </section>
         <section className={styles.sliderGroup}>
-          <label>Review threshold: {thresholdReview}</label>
+          <label>
+            <span>REVIEW THRESHOLD</span>
+            <span className={styles.sliderValue}>
+              {thresholdReview.toFixed(2)}
+            </span>
+          </label>
+          <p className={styles.sliderHint}>
+            Revisión: 0.45 – 0.74 · Aprobadas: 0.00 – 0.44
+          </p>
           <input
             type="range"
             min="0"
@@ -57,35 +71,34 @@ function ThresholdSimulator() {
       </section>
 
       <button onClick={handlePreview} disabled={loading}>
-        {loading ? "Calculating..." : "Preview"}
+        {loading ? "Calculando..." : "Preview"}
       </button>
 
       {preview && (
         <>
-          {/* Resultados de la configuración actual */}
           <section className={styles.results}>
             <article className={styles.resultItem}>
-              <span>Blocked</span>
+              <span>Bloqueadas</span>
               <strong>{preview.preview_config?.blocked}</strong>
             </article>
             <article className={styles.resultItem}>
-              <span>Reviewed</span>
+              <span>En revisión</span>
               <strong>{preview.preview_config?.reviewed}</strong>
             </article>
             <article className={styles.resultItem}>
-              <span>Allowed</span>
+              <span>Aprobadas</span>
               <strong>{preview.preview_config?.allowed}</strong>
             </article>
             <article className={styles.resultItem}>
-              <span>Fraud caught</span>
+              <span>Fraude detectado</span>
               <strong>{preview.preview_config?.fraud_caught}</strong>
             </article>
             <article className={styles.resultItem}>
-              <span>False positives</span>
+              <span>Falsos positivos</span>
               <strong>{preview.preview_config?.false_positives}</strong>
             </article>
             <article className={styles.resultItem}>
-              <span>Money saved</span>
+              <span>Dinero salvado</span>
               <strong>€{preview.preview_config?.money_saved_eur}</strong>
             </article>
             {preview.delta?.recommendation && (
@@ -95,14 +108,13 @@ function ThresholdSimulator() {
             )}
           </section>
 
-          {/* Benchmark R1 vs R2 — solo si compare=true lo devuelve */}
           {preview.comparison && (
             <section className={styles.comparison}>
               <h4>Round 1 vs Round 2</h4>
               <table className={styles.comparisonTable}>
                 <thead>
                   <tr>
-                    <th>Metric</th>
+                    <th>Métrica</th>
                     <th>Round 1</th>
                     <th>Round 2</th>
                   </tr>
@@ -124,7 +136,7 @@ function ThresholdSimulator() {
                     <td>{preview.comparison.round_2?.f1 ?? "—"}</td>
                   </tr>
                   <tr>
-                    <td>Fraud detected (€)</td>
+                    <td>Fraude detectado (€)</td>
                     <td>
                       {preview.comparison.round_1?.fraud_detected_eur ?? "—"}
                     </td>

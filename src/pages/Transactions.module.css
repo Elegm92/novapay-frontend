@@ -29,6 +29,71 @@
   display: flex;
   gap: 10px;
 }
+/*Search*/
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 340px;
+  margin-left: auto;
+  padding: 12px 16px;
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.searchBox:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.searchBox:focus-within {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px rgba(6, 182, 212, 0.15),
+    0 6px 24px rgba(6, 182, 212, 0.12);
+
+  transform: translateY(-2px);
+}
+
+.searchBox span {
+  font-size: 18px;
+  color: var(--color-text-light);
+  transition: color 0.25s ease;
+}
+
+.searchBox:focus-within span {
+  color: var(--color-primary);
+}
+
+.searchBox input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.searchBox input::placeholder {
+  color: var(--color-text-light);
+  opacity: 0.7;
+}
 
 /* ── Buttons ── */
 .refreshBtn {

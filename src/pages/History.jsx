@@ -22,7 +22,7 @@ const History = () => {
   useEffect(() => {
     fetchDecisions();
     fetchStats();
-  }, [filters]);
+  }, []);
 
   const fetchDecisions = async () => {
     try {
@@ -59,34 +59,61 @@ const History = () => {
         </div>
 
         <section className={styles.kpiGrid}>
-          <KPICard label="Total Approved" value={stats?.total_approved ?? "—"} icon="check_circle" />
-          <KPICard label="Total Blocked" value={stats?.total_blocked ?? "—"} icon="block" />
-          <KPICard label="Manual Flags" value={stats?.manual_flags ?? "—"} icon="flag" />
           <KPICard
-            label="Avg. Resolve Time"
-            value={stats?.avg_resolve_time_minutes != null ? `${stats.avg_resolve_time_minutes} min` : "—"}
-            icon="timer"
+            label="Total Aprobadas"
+            value={stats?.total_approved ?? "—"}
+            icon="check_circle"
+          />
+          <KPICard
+            label="Total Bloqueadas"
+            value={stats?.total_blocked ?? "—"}
+            icon="block"
+          />
+          <KPICard
+            label="Revisiones Manuales"
+            value={stats?.manual_flags ?? "—"}
+            icon="flag"
           />
         </section>
 
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
-            <label>Verdict</label>
-            <select value={filters.verdict} onChange={(e) => setFilters({ ...filters, verdict: e.target.value })}>
-              <option value="">All Verdicts</option>
-              <option value="fraud">Fraud</option>
-              <option value="legitimate">Legitimate</option>
+            <label>Veredicto</label>
+            <select
+              value={filters.verdict}
+              onChange={(e) =>
+                setFilters({ ...filters, verdict: e.target.value })
+              }
+              style={{ colorScheme: "dark" }}
+            >
+              <option value="">Todos</option>
+              <option value="fraud">Fraude</option>
+              <option value="legitimate">Legítima</option>
             </select>
           </div>
           <div className={styles.filterGroup}>
-            <label>From</label>
-            <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })} />
+            <label>Desde</label>
+            <input
+              type="date"
+              value={filters.dateFrom}
+              onChange={(e) =>
+                setFilters({ ...filters, dateFrom: e.target.value })
+              }
+            />
           </div>
           <div className={styles.filterGroup}>
-            <label>To</label>
-            <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })} />
+            <label>Hasta</label>
+            <input
+              type="date"
+              value={filters.dateTo}
+              onChange={(e) =>
+                setFilters({ ...filters, dateTo: e.target.value })
+              }
+            />
           </div>
-          <button className={styles.filterBtn} onClick={fetchDecisions}>Apply Filters</button>
+          <button className={styles.filterBtn} onClick={fetchDecisions}>
+            Aplicar Filtros
+          </button>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -94,7 +121,7 @@ const History = () => {
         {loading ? (
           <Spinner />
         ) : decisions.length === 0 ? (
-          <div className={styles.emptyState}>No decisions found.</div>
+          <div className={styles.emptyState}>No se encontraron decisiones.</div>
         ) : (
           <HistoryTable decisions={decisions} onRowClick={handleRowClick} />
         )}

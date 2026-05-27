@@ -5,7 +5,7 @@ import ClientModal from "./ClientModal.jsx";
 import Spinner from "../shared/Spinner.jsx";
 import styles from "./TransactionDetailPanel.module.css";
 
-const TransactionDetailPanel = ({ transaction, onClose }) => {
+const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
   const [decision, setDecision] = useState(null);
   const [challenge, setChallenge] = useState(null);
   const [narrative, setNarrative] = useState(null);
@@ -26,7 +26,6 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
     try {
       setLoading(true);
       setError("");
-
       const decisionData = await decideTransaction({
         transaction_id: transaction.transaction_id,
         step: transaction.step,
@@ -84,7 +83,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
 
   return (
     <div className={styles.panel} id="detail-panel">
-      {/* Columna izquierda — Datos de la transacción */}
+      {/* Columna izquierda */}
       <div className={styles.leftColumn}>
         <div className={styles.sectionHeader}>
           <h3>{transaction.transaction_id}</h3>
@@ -101,6 +100,14 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Source Account</p>
             <p className={styles.dataValue}>{transaction.nameOrig || "—"}</p>
+          </div>
+          <div className={styles.dataItem}>
+            <p className={styles.dataLabel}>Amount</p>
+            <p className={styles.dataValue}>
+              {transaction.amount != null
+                ? `$${transaction.amount.toLocaleString()}`
+                : "—"}
+            </p>
           </div>
           <div className={styles.dataItem}>
             <p className={styles.dataLabel}>Destination</p>
@@ -168,7 +175,7 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
         )}
       </div>
 
-      {/* Columna derecha — Informe ML */}
+      {/* Columna derecha — ML */}
       <div className={styles.rightColumn}>
         {error && <div className={styles.error}>{error}</div>}
         {loading ? (
@@ -209,11 +216,34 @@ const TransactionDetailPanel = ({ transaction, onClose }) => {
               </div>
             )}
 
-            <VerdictForm
-              transaction={transaction}
-              decision={decision}
-              onClose={onClose}
-            />
+            {!isReviewed ? (
+              <VerdictForm
+                transaction={transaction}
+                decision={decision}
+                onClose={onClose}
+              />
+            ) : (
+              <div
+                style={{
+                  padding: "12px 16px",
+                  background: "var(--color-surface-low)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  fontSize: "13px",
+                  color: "var(--color-text-muted)",
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
+              >
+                <span className="material-icons" style={{ fontSize: "16px" }}>
+                  check_circle
+                </span>
+                This transaction has already been reviewed.
+              </div>
+            )}
           </>
         )}
       </div>
