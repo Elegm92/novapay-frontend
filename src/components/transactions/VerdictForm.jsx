@@ -48,6 +48,17 @@ const VerdictForm = ({ transaction, onClose }) => {
         notes,
       });
 
+      await Swal.fire({
+        title: isLegitimate ? "Transacción aprobada" : "Fraude confirmado",
+        text: isLegitimate
+          ? "La transacción se ha marcado como legítima correctamente."
+          : "La transacción se ha marcado como fraudulenta correctamente.",
+        icon: "success",
+        confirmButtonColor: "#06B6D4",
+        background: "#111827",
+        color: "#EEF0FF",
+      });
+      
       onClose();
     } catch (error) {
       console.error("Error submitting verdict:", error);

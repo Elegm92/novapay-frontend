@@ -42,14 +42,44 @@
   align-items: center;
 }
 
+.sliderValue {
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.sliderHint {
+  font-size: 10px;
+  color: var(--color-text-light);
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
 .sliderGroup input[type="range"] {
   width: 100%;
   height: 6px;
   border-radius: 9999px;
   appearance: none;
-  background: var(--color-surface-low);
+  background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
   accent-color: var(--color-primary);
+}
+
+.sliderGroup input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sliderGroup input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  margin-top: -5px;
+  box-shadow: 0 0 4px rgba(6, 182, 212, 0.5);
 }
 
 .simulator > button {
@@ -90,11 +120,13 @@
 .resultItem {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
+  gap: 8px;
   padding: 12px;
   background: var(--color-surface-low);
   border-radius: var(--radius-md);
   min-width: 0;
+  min-height: 80px;
 }
 
 .resultItem span {
@@ -103,13 +135,20 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-text-light);
+  min-height: 28px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .resultItem strong {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--color-text);
   font-family: var(--font-mono);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: block;
+  margin-top: auto;
 }
 
 .recommendation {

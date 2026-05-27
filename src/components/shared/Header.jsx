@@ -5,7 +5,7 @@ import AvatarSelector from "./AvatarSelector.jsx";
 import styles from "./Header.module.css";
 import { getAvatarUrl } from "../../utils/avatar.js";
 
-function Header() {
+function Header({ onToggleSidebar, sidebarOpen }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
@@ -18,18 +18,17 @@ function Header() {
   return (
     <>
       <header className={styles.header}>
-        <section className={styles.search}>
-          <span className="material-icons">search</span>
-          <input
-            type="text"
-            placeholder="Search suspicious case, txn hash, or entity..."
-          />
-        </section>
+        <button
+          className={styles.hamburger}
+          onClick={onToggleSidebar}
+          title={sidebarOpen ? "Close menu" : "Open menu"}
+        >
+          <span className="material-icons">
+            {sidebarOpen ? "close" : "menu"}
+          </span>
+        </button>
+
         <section className={styles.actions}>
-          <button className={styles.iconBtn}>
-            <span className="material-icons">notifications</span>
-            <span className={styles.badge}></span>
-          </button>
           <section className={styles.user}>
             <section className={styles.userText}>
               <p className={styles.name}>{user?.name || "Analyst"}</p>
@@ -50,6 +49,7 @@ function Header() {
           </button>
         </section>
       </header>
+
       {showAvatarSelector && (
         <AvatarSelector onClose={() => setShowAvatarSelector(false)} />
       )}

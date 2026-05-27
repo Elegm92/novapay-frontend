@@ -15,77 +15,13 @@
   gap: 16px;
 }
 
-/* ── Search ── */
-.search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  max-width: 100%;
-  background: var(--color-surface-low);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 8px 12px;
-  transition: var(--transition);
-}
-
-.search:focus-within {
-  border-color: var(--color-primary);
-  background: var(--color-surface-white);
-}
-
-.search span {
-  color: var(--color-text-light);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.search input {
-  flex: 1;
-  font-size: 13px;
-  color: var(--color-text);
-  background: transparent;
-  min-width: 0;
-}
-
-.search input::placeholder {
-  color: var(--color-text-light);
-}
-
 /* ── Actions ── */
 .actions {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-}
-
-/* Notificaciones */
-.iconBtn {
-  position: relative;
-  background: none;
-  color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  border-radius: var(--radius-md);
-  transition: var(--transition);
-}
-
-.iconBtn:hover {
-  color: var(--color-primary);
-  opacity: 1;
-}
-
-.badge {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 8px;
-  height: 8px;
-  background: var(--color-error);
-  border-radius: 50%;
-  border: 1px solid var(--color-surface-white);
+  margin-left: auto;
 }
 
 /* ── User ── */
@@ -150,6 +86,25 @@
   display: none;
 }
 
+.hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.hamburger:hover {
+  background: var(--color-surface-high);
+  color: var(--color-text);
+}
+
 /* ── Tablet ── */
 @media (min-width: 768px) {
   .header {
@@ -163,6 +118,10 @@
 
   .logout span:last-child {
     display: inline;
+  }
+
+  .hamburger {
+    display: none;
   }
 }
 
@@ -183,5 +142,8 @@
 
   .actions {
     gap: 16px;
+  }
+  .hamburger {
+    display: none;
   }
 }

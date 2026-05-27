@@ -29,8 +29,36 @@ function Dashboard() {
     fetchStats();
   }, []);
 
-if (loading) return <Spinner />;  
-if (error) return <p>Error: {error}</p>;
+if (loading)
+  return (
+    <Layout>
+      <Spinner />
+    </Layout>
+  );
+if (error)
+  return (
+    <Layout>
+      <div
+        style={{
+          margin: "32px 24px",
+          padding: "16px 20px",
+          background: "var(--color-error-bg)",
+          color: "var(--color-error)",
+          borderRadius: "var(--radius-md)",
+          fontSize: "14px",
+          fontWeight: 500,
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <span className="material-icons" style={{ fontSize: "20px" }}>
+          error_outline
+        </span>
+        Could not load dashboard data. Please try reloading the page.
+      </div>
+    </Layout>
+  );
 
   return (
     <Layout>

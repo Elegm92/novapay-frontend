@@ -305,10 +305,6 @@
 
 /* ── Desktop ── */
 @media (min-width: 1024px) {
-  .overlay {
-    left: 280px;
-  }
-
   .modal {
     width: 80%;
     max-width: 720px;

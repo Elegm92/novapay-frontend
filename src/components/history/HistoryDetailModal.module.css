@@ -1,3 +1,4 @@
+/* ── Overlay ── */
 .overlay {
   position: fixed;
   inset: 0;
@@ -10,6 +11,7 @@
   padding: 0;
 }
 
+/* ── Modal ── */
 .modal {
   background: var(--color-surface-white);
   width: 100%;
@@ -21,6 +23,7 @@
   box-shadow: var(--shadow-lg);
 }
 
+/* ── Header ── */
 .header {
   padding: 16px;
   border-bottom: 1px solid var(--color-border);
@@ -53,6 +56,7 @@
   align-items: center;
 }
 
+/* ── Content ── */
 .content {
   padding: 16px;
   display: flex;
@@ -145,6 +149,7 @@
   margin: 0;
 }
 
+/* ── Footer ── */
 .footer {
   padding: 16px;
   border-top: 1px solid var(--color-border);
@@ -178,37 +183,244 @@
     max-height: 85vh;
     border-radius: var(--radius-lg);
   }
-
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 /* ── Desktop ── */
 @media (min-width: 1024px) {
-  .overlay {
-    left: 280px;
-  }
-
   .modal {
     width: 80%;
     max-width: 720px;
   }
 
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
+  .content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .leftColumn {
+    flex: 1.5;
+  }
+
+  .rightColumn {
+    flex: 1;
   }
 
   .header {
     padding: 20px 28px;
   }
 
-  .transactionList {
-    padding: 20px 28px;
+  .footer {
+    padding: 16px 28px;
+  }
+}/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 28, 58, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  padding: 0;
+}
+
+/* ── Modal ── */
+.modal {
+  background: var(--color-surface-white);
+  width: 100%;
+  max-height: 90vh;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Header ── */
+.header {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.transactionId {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin: 4px 0 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Content ── */
+.content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leftColumn h4,
+.rightColumn h4 {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.dataGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.dataItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dataLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.dataValue {
+  font-size: 14px;
+  color: var(--color-text);
+  margin: 0;
+  font-weight: 500;
+}
+
+.verdictCard {
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.verdictBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fraud {
+  background: var(--color-fraud-bg);
+  color: var(--color-fraud);
+}
+
+.legitimate {
+  background: var(--color-legitimate-bg);
+  color: var(--color-legitimate);
+}
+
+.notes {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeButton {
+  background: var(--color-primary);
+  color: white;
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) {
+  .overlay {
+    align-items: center;
+    padding: 24px;
   }
 
-  .riskFlags {
-    padding: 16px 28px;
+  .modal {
+    width: 90%;
+    max-width: 640px;
+    max-height: 85vh;
+    border-radius: var(--radius-lg);
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .modal {
+    width: 80%;
+    max-width: 720px;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .leftColumn {
+    flex: 1.5;
+  }
+
+  .rightColumn {
+    flex: 1;
+  }
+
+  .header {
+    padding: 20px 28px;
   }
 
   .footer {

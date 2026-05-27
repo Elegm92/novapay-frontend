@@ -29,6 +29,15 @@
   border-bottom: 1px solid var(--color-border);
   white-space: nowrap;
   text-align: left;
+  cursor: pointer;
+  user-select: none;
+}
+
+.table th span {
+  font-size: 14px;
+  vertical-align: middle;
+  margin-left: 4px;
+  opacity: 0.6;
 }
 
 /* ── Rows ── */
