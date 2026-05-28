@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { previewThreshold } from "../../services/api.js";
 import styles from "./ThresholdSimulator.module.css";
+import { formatNumber, formatCurrency } from "../../utils/formatters.js";
 
 function ThresholdSimulator() {
   const [thresholdBlock, setThresholdBlock] = useState(0.75);
@@ -28,13 +29,13 @@ function ThresholdSimulator() {
   return (
     <article className={styles.simulator}>
       <header className={styles.simulatorHeader}>
-        <h3>Threshold Simulator</h3>
+        <h3>Simulador de Umbrales</h3>
       </header>
 
       <section className={styles.sliders}>
         <section className={styles.sliderGroup}>
           <label>
-            <span>BLOCK THRESHOLD</span>
+            <span>UMBRAL DE BLOQUEO</span>
             <span className={styles.sliderValue}>
               {thresholdBlock.toFixed(2)}
             </span>
@@ -51,7 +52,7 @@ function ThresholdSimulator() {
         </section>
         <section className={styles.sliderGroup}>
           <label>
-            <span>REVIEW THRESHOLD</span>
+            <span>UMBRAL DE REVISIÓN</span>
             <span className={styles.sliderValue}>
               {thresholdReview.toFixed(2)}
             </span>
@@ -71,7 +72,7 @@ function ThresholdSimulator() {
       </section>
 
       <button onClick={handlePreview} disabled={loading}>
-        {loading ? "Calculando..." : "Preview"}
+        {loading ? "Calculando..." : "Previsualizar"}
       </button>
 
       {preview && (
@@ -79,27 +80,33 @@ function ThresholdSimulator() {
           <section className={styles.results}>
             <article className={styles.resultItem}>
               <span>Bloqueadas</span>
-              <strong>{preview.preview_config?.blocked}</strong>
+              <strong>{formatNumber(preview.preview_config?.blocked)}</strong>
             </article>
             <article className={styles.resultItem}>
               <span>En revisión</span>
-              <strong>{preview.preview_config?.reviewed}</strong>
+              <strong>{formatNumber(preview.preview_config?.reviewed)}</strong>
             </article>
             <article className={styles.resultItem}>
               <span>Aprobadas</span>
-              <strong>{preview.preview_config?.allowed}</strong>
+              <strong>{formatNumber(preview.preview_config?.allowed)}</strong>
             </article>
             <article className={styles.resultItem}>
               <span>Fraude detectado</span>
-              <strong>{preview.preview_config?.fraud_caught}</strong>
+              <strong>
+                {formatNumber(preview.preview_config?.fraud_caught)}
+              </strong>
             </article>
             <article className={styles.resultItem}>
               <span>Falsos positivos</span>
-              <strong>{preview.preview_config?.false_positives}</strong>
+              <strong>
+                {formatNumber(preview.preview_config?.false_positives)}
+              </strong>
             </article>
             <article className={styles.resultItem}>
               <span>Dinero salvado</span>
-              <strong>€{preview.preview_config?.money_saved_eur}</strong>
+              <strong>
+                {formatCurrency(preview.preview_config?.money_saved_eur)}
+              </strong>
             </article>
             {preview.delta?.recommendation && (
               <p className={styles.recommendation}>
@@ -138,10 +145,10 @@ function ThresholdSimulator() {
                   <tr>
                     <td>Fraude detectado (€)</td>
                     <td>
-                      {preview.comparison.round_1?.fraud_detected_eur ?? "—"}
+                      {formatCurrency(preview.comparison.round_1?.fraud_detected_eur)}
                     </td>
                     <td>
-                      {preview.comparison.round_2?.fraud_detected_eur ?? "—"}
+                      {formatCurrency(preview.comparison.round_2?.fraud_detected_eur)}
                     </td>
                   </tr>
                 </tbody>

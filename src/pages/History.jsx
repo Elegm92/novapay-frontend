@@ -38,7 +38,7 @@ const History = () => {
 
     } catch (error) {
       console.error("Error fetching decisions:", error);
-      setError("Failed to load decision history.");
+      setError("Error al cargar el historial de decisiones.");
     } finally {
       setLoading(false);
     }
@@ -51,8 +51,8 @@ const History = () => {
     <Layout>
       <div className={styles.container}>
         <div className={styles.pageHeader}>
-          <h2>Decision History</h2>
-          <p>Review all past verdicts and analyst rationales.</p>
+          <h2>Historial de Decisiones</h2>
+          <p>Revisa todos los veredictos y decisiones anteriores.</p>
         </div>
 
         <section className={styles.kpiGrid}>

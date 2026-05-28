@@ -70,7 +70,7 @@ const VerdictForm = ({ transaction, onClose }) => {
 
   return (
     <div className={styles.form}>
-      <h3>Analyst Verdict</h3>
+      <h3>Veredicto del Analista</h3>
 
       <div className={styles.inputGroup}>
         <label>

@@ -67,11 +67,11 @@ function RiskMap() {
     const updateRadii = () => {
       const w = window.innerWidth;
       if (w >= 1024) {
-        setRadii({ outerA: 140, innerA: 100, outerB: 90, innerB: 50 });
-      } else if (w >= 640) {
         setRadii({ outerA: 110, innerA: 78, outerB: 70, innerB: 38 });
+      } else if (w >= 640) {
+        setRadii({ outerA: 90, innerA: 62, outerB: 55, innerB: 28 });
       } else {
-        setRadii({ outerA: 85, innerA: 58, outerB: 50, innerB: 25 });
+        setRadii({ outerA: 70, innerA: 48, outerB: 42, innerB: 20 });
       }
     };
     updateRadii();
@@ -79,7 +79,7 @@ function RiskMap() {
     return () => window.removeEventListener("resize", updateRadii);
   }, []);
 
-  if (loading) return <p className={styles.loading}>Loading risk map...</p>;
+  if (loading) return <p className={styles.loading}>Cargando...</p>;
   if (error) return <p className={styles.error}>No data available</p>;
 
   const countryData =
@@ -99,12 +99,12 @@ function RiskMap() {
   return (
     <article className={styles.riskMap}>
       <header className={styles.riskMapHeader}>
-        <h3>Risk Map</h3>
+        <h3>Mapa de Riesgo</h3>
       </header>
 
       <div className={styles.chartContent}>
         <div className={styles.chartWrapper}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={260} minHeight={260}>
             <PieChart>
               <Pie
                 data={countryData}
@@ -151,7 +151,7 @@ function RiskMap() {
 
         <div className={styles.bottomLegend}>
           <div className={styles.legendGroup}>
-            <h4>Countries</h4>
+            <h4>Top países por fraude</h4>
             <div className={styles.legendInline}>
               {countryData.map((item, i) => (
                 <div key={i} className={styles.legendItem}>
@@ -169,7 +169,7 @@ function RiskMap() {
           </div>
 
           <div className={styles.legendGroup}>
-            <h4>Categories</h4>
+            <h4>Top categorías por fraude</h4>
             <div className={styles.legendInline}>
               {categoryData.map((item, i) => (
                 <div key={i} className={styles.legendItem}>

@@ -7,9 +7,15 @@ function RiskBadge({ level }) {
     low: styles.low,
   };
 
+  const labels = {
+    high: "ALTO",
+    medium: "MEDIO",
+    low: "BAJO",
+  };
+
   return (
     <span className={`${styles.badge} ${levels[level] ?? ""}`}>
-      {level?.toUpperCase() ?? "—"}
+      {labels[level] ?? level?.toUpperCase() ?? "—"}
     </span>
   );
 }

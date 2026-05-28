@@ -51,7 +51,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
           <div className={styles.titleArea}>
             <span className="material-icons">person</span>
             <div>
-              <h3>Client ID: {clientId}</h3>
+              <h3>ID Cliente: {clientId}</h3>
               {clientData?.stats?.fraud_rate_historical != null && (
                 <span
                   className={`${styles.riskBadge} ${
@@ -83,7 +83,6 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
           <div className={styles.error}>{error}</div>
         ) : clientData ? (
           <>
-            {/* Stats */}
             <div className={styles.statsGrid}>
               <div className={styles.statCard}>
                 <p>Total Transacciones</p>
@@ -91,15 +90,11 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
               </div>
               <div className={styles.statCard}>
                 <p>Volumen Total</p>
-                <h3>
-                  €{clientData.stats?.total_volume?.toLocaleString() ?? "—"}
-                </h3>
+                <h3>€{clientData.stats?.total_volume?.toLocaleString() ?? "—"}</h3>
               </div>
               <div className={styles.statCard}>
                 <p>Importe Medio</p>
-                <h3>
-                  €{clientData.stats?.avg_amount?.toLocaleString() ?? "—"}
-                </h3>
+                <h3>€{clientData.stats?.avg_amount?.toLocaleString() ?? "—"}</h3>
               </div>
               <div className={styles.statCard}>
                 <p>Tasa de Fraude</p>
@@ -135,7 +130,6 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* Risk Flags */}
             {clientData.risk_flags?.length > 0 && (
               <div className={styles.riskFlags}>
                 <h4>Alertas de Riesgo</h4>
@@ -150,7 +144,6 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Transacciones recientes */}
             <div className={styles.transactionList}>
               <h4>Transacciones Recientes</h4>
               <table className={styles.table}>
@@ -207,7 +200,6 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
           </>
         ) : null}
 
-        {/* Footer */}
         <div className={styles.footer}>
           <button className={styles.closeButton} onClick={onClose}>
             Cerrar

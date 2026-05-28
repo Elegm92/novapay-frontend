@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import { decideTransaction, getChallengeRecommendation, explainTransaction } from "../../services/api.js";
+import {
+  decideTransaction,
+  getChallengeRecommendation,
+  explainTransaction,
+} from "../../services/api.js";
 import VerdictForm from "./VerdictForm.jsx";
 import ClientModal from "./ClientModal.jsx";
 import Spinner from "../shared/Spinner.jsx";
 import styles from "./TransactionDetailPanel.module.css";
+import { formatCurrency, formatStepAsTime } from "../../utils/formatters.js";
 
 const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
   const [decision, setDecision] = useState(null);
@@ -62,7 +67,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
 
     } catch (error) {
       console.error("Error fetching ML data:", error);
-      setError("Could not load model analysis.");
+      setError("No se pudo cargar el análisis del modelo.");
     } finally {
       setLoading(false);
     }
@@ -81,73 +86,63 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
             onClick={() => setClientModalOpen(true)}
           >
             <span className="material-icons">person_search</span>
-            View Client: {transaction.nameOrig || "Unknown"}
+            Ver Cliente: {transaction.nameOrig || "Desconocido"}
           </button>
         </div>
 
         <div className={styles.dataGrid}>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Source Account</p>
+            <p className={styles.dataLabel}>Cuenta Origen</p>
             <p className={styles.dataValue}>{transaction.nameOrig || "—"}</p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Amount</p>
+            <p className={styles.dataLabel}>Importe</p>
             <p className={styles.dataValue}>
-              {transaction.amount != null
-                ? `$${transaction.amount.toLocaleString()}`
-                : "—"}
+              {formatCurrency(transaction.amount)}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Destination</p>
+            <p className={styles.dataLabel}>Destino</p>
             <p className={styles.dataValue}>{transaction.nameDest || "—"}</p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Balance Before</p>
+            <p className={styles.dataLabel}>Saldo Antes</p>
             <p className={styles.dataValue}>
-              {transaction.oldbalanceOrg != null
-                ? `$${transaction.oldbalanceOrg.toLocaleString()}`
-                : "—"}
+              {formatCurrency(transaction.oldbalanceOrg)}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Balance After</p>
+            <p className={styles.dataLabel}>Saldo Después</p>
             <p className={styles.dataValue}>
-              {transaction.newbalanceOrig != null
-                ? `$${transaction.newbalanceOrig.toLocaleString()}`
-                : "—"}
+              {formatCurrency(transaction.newbalanceOrig)}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Dest. Balance Before</p>
+            <p className={styles.dataLabel}>Saldo Destino Antes</p>
             <p className={styles.dataValue}>
-              {transaction.oldbalanceDest != null
-                ? `$${transaction.oldbalanceDest.toLocaleString()}`
-                : "—"}
+              {formatCurrency(transaction.oldbalanceDest)}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Dest. Balance After</p>
+            <p className={styles.dataLabel}>Saldo Destino Después</p>
             <p className={styles.dataValue}>
-              {transaction.newbalanceDest != null
-                ? `$${transaction.newbalanceDest.toLocaleString()}`
-                : "—"}
+              {formatCurrency(transaction.newbalanceDest)}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>IP Country</p>
+            <p className={styles.dataLabel}>País IP</p>
             <p className={styles.dataValue}>{transaction.ip_country || "—"}</p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Category</p>
+            <p className={styles.dataLabel}>Categoría</p>
             <p className={styles.dataValue}>
               {transaction.merchant_category || "—"}
             </p>
           </div>
           <div className={styles.dataItem}>
-            <p className={styles.dataLabel}>Step</p>
+            <p className={styles.dataLabel}>Paso</p>
             <p className={styles.dataValue}>
-              {transaction.step != null ? `Hour ${transaction.step}` : "—"}
+              {formatStepAsTime(transaction.step)}
             </p>
           </div>
         </div>
@@ -173,15 +168,17 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
           <>
             {decision && (
               <div className={styles.decisionSection}>
-                <h3>ML Decision</h3>
+                <h3>Decisión del Modelo</h3>
                 <div className={styles.decisionBadge}>
-                  <span className={`${styles.decision} ${styles[decision.decision]}`}>
+                  <span
+                    className={`${styles.decision} ${styles[decision.decision]}`}
+                  >
                     {decision.decision?.toUpperCase()}
                   </span>
                   <span className={styles.probability}>
                     {decision.fraud_probability != null
-                      ? `${Math.round(decision.fraud_probability * 100)}% fraud probability`
-                      : "Probability not available"}
+                      ? `${Math.round(decision.fraud_probability * 100)}% probabilidad de fraude`
+                      : "Probabilidad no disponible"}
                   </span>
                 </div>
               </div>
@@ -189,10 +186,14 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
 
             {challenge && (
               <div className={styles.challengeSection}>
-                <h3>Friction Recommendation</h3>
-                <div className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}>
+                <h3>Recomendación de Fricción</h3>
+                <div
+                  className={`${styles.frictionBadge} ${styles[challenge.primary_option?.friction]}`}
+                >
                   <span className="material-icons">
-                    {challenge.primary_option?.friction === "high" ? "block" : "warning"}
+                    {challenge.primary_option?.friction === "high"
+                      ? "block"
+                      : "warning"}
                   </span>
                   <span>{challenge.recommended_action?.toUpperCase()}</span>
                 </div>
@@ -230,7 +231,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
                 <span className="material-icons" style={{ fontSize: "16px" }}>
                   check_circle
                 </span>
-                This transaction has already been reviewed.
+                Esta transacción ya ha sido revisada.
               </div>
             )}
           </>

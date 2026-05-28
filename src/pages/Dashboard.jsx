@@ -29,84 +29,83 @@ function Dashboard() {
     fetchStats();
   }, []);
 
-if (loading)
-  return (
-    <Layout>
-      <Spinner />
-    </Layout>
-  );
-if (error)
-  return (
-    <Layout>
-      <div
-        style={{
-          margin: "32px 24px",
-          padding: "16px 20px",
-          background: "var(--color-error-bg)",
-          color: "var(--color-error)",
-          borderRadius: "var(--radius-md)",
-          fontSize: "14px",
-          fontWeight: 500,
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <span className="material-icons" style={{ fontSize: "20px" }}>
-          error_outline
-        </span>
-        Could not load dashboard data. Please try reloading the page.
-      </div>
-    </Layout>
-  );
+  if (loading)
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  if (error)
+    return (
+      <Layout>
+        <div
+          style={{
+            margin: "32px 24px",
+            padding: "16px 20px",
+            background: "var(--color-error-bg)",
+            color: "var(--color-error)",
+            borderRadius: "var(--radius-md)",
+            fontSize: "14px",
+            fontWeight: 500,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <span className="material-icons" style={{ fontSize: "20px" }}>
+            error_outline
+          </span>
+          Could not load dashboard data. Please try reloading the page.
+        </div>
+      </Layout>
+    );
 
   return (
     <Layout>
       <section className={styles.dashboard}>
         <section className={styles.hero}>
           <section className={styles.heroText}>
-            <span className={styles.vigilance}>HIGH VIGILANCE MODE</span>
-            <h2>{stats?.pending_cases ?? "—"} Pending Cases</h2>
-            <p>Review required. Check the transactions queue.</p>
+            <span className={styles.vigilance}>MODO VIGILANCIA ACTIVA</span>
+            <h2>{stats?.pending_cases ?? "—"} Casos Pendientes</h2>
+            <p>Revisión requerida. Comprueba la cola de transacciones.</p>
           </section>
           <button
             className={styles.viewCasesBtn}
             onClick={() => navigate("/transactions")}
           >
-            View all cases
+            Ver Transacciones
           </button>
         </section>
 
         {stats && (
           <section className={styles.kpiGrid}>
             <KPICard
-              label="Total Transactions"
+              label="Total Transacciones"
               value={stats.total_transactions}
               icon="receipt_long"
             />
             <KPICard
-              label="Transactions Today"
+              label="Transacciones Hoy"
               value={stats.transactions_today}
               icon="today"
             />
             <KPICard
-              label="Pending Cases"
+              label="Casos Pendientes"
               value={stats.pending_cases}
               icon="pending"
             />
             <KPICard
-              label="Blocked"
+              label="Bloqueadas"
               value={stats.blocked_transactions}
               icon="block"
             />
             <KPICard
-              label="Detection Rate"
+              label="Tasa de Detección"
               value={stats.detection_rate}
               icon="radar"
             />
           </section>
         )}
-
         <section className={styles.bottomGrid}>
           <RiskMap />
           <ThresholdSimulator />

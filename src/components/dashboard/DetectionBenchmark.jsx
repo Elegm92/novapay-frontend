@@ -26,7 +26,7 @@ function DetectionBenchmark() {
   return (
     <article className={styles.benchmark}>
       <header className={styles.header}>
-        <h3>Detection Benchmark</h3>
+        <h3>Análisis de Rendimiento del Modelo</h3>
         <p className={styles.subtitle}>
           XGBoost R1 vs R2 — Modelos en producción
         </p>

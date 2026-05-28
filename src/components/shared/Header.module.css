@@ -11,8 +11,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  z-index: 40;
+  z-index: 30;
   gap: 16px;
+  transition: left 0.3s ease;
 }
 
 /* ── Actions ── */
@@ -110,6 +111,7 @@
   .header {
     padding: 0 20px;
     gap: 20px;
+    left: 0;
   }
 
   .user {
@@ -130,6 +132,10 @@
   .header {
     left: 280px;
     padding: 0 24px;
+  }
+
+  .headerCollapsed {
+    left: 64px;
   }
 
   .search {

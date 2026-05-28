@@ -32,25 +32,25 @@
 }
 
 .orb1 {
-  width: 500px;
-  height: 500px;
+  width: 300px;
+  height: 300px;
   background: var(--color-primary);
-  top: -200px;
-  left: -200px;
+  top: -100px;
+  left: -100px;
 }
 
 .orb2 {
-  width: 400px;
-  height: 400px;
+  width: 250px;
+  height: 250px;
   background: #1f2937;
-  bottom: 40px;
-  right: -80px;
+  bottom: 20px;
+  right: -40px;
   animation-delay: -5s;
 }
 
 .orb3 {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   background: var(--color-primary);
   top: 50%;
   left: 50%;
@@ -69,11 +69,11 @@
   position: fixed;
   top: 0;
   width: 100%;
-  height: 64px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  padding: 0 16px;
   border-bottom: 1px solid var(--color-border);
   background: rgba(12, 18, 32, 0.5);
   backdrop-filter: blur(12px);
@@ -88,7 +88,7 @@
 
 .headerTitle {
   font-family: var(--font-headline);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--color-primary);
   letter-spacing: -0.02em;
@@ -107,7 +107,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 16px 60px;
+  padding: 72px 16px 24px;
   position: relative;
   z-index: 10;
 }
@@ -124,19 +124,19 @@
 /* ── Portal header ── */
 .portalHeader {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .iconBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   background: rgba(6, 182, 212, 0.1);
   border: 1px solid rgba(6, 182, 212, 0.2);
   border-radius: 12px;
@@ -144,7 +144,7 @@
 
 .portalTitle {
   font-family: var(--font-headline);
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--color-text);
   letter-spacing: -0.02em;
@@ -165,7 +165,7 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(6, 182, 212, 0.2);
   border-radius: 12px;
-  padding: 32px;
+  padding: 24px 20px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
@@ -184,7 +184,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .fieldGroup {
@@ -306,7 +306,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 20px;
   padding: 12px;
   background: rgba(31, 41, 55, 0.4);
   border: 1px solid rgba(61, 73, 76, 0.3);
@@ -323,91 +323,99 @@
 
 /* ── Footer note ── */
 .footerNote {
-  margin-top: 24px;
+  margin-top: 20px;
   text-align: center;
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-text-muted);
   opacity: 0.5;
   line-height: 1.6;
-  padding: 0 16px;
-}
-
-/* ── Status bar ── */
-.statusBar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  border-top: 1px solid var(--color-border);
-  background: rgba(10, 14, 24, 0.8);
-  backdrop-filter: blur(12px);
-  z-index: 40;
-}
-
-.statusLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.statusIndicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 8px #22c55e;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.statusDivider {
-  width: 1px;
-  height: 12px;
-  background: var(--color-border);
-}
-
-.statusText {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--color-text-muted);
-}
-
-.statusRight {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.statusLink {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.statusLink:hover {
-  color: var(--color-primary);
+  padding: 0 8px;
 }
 
 /* ── Tablet ── */
 @media (min-width: 768px) {
+  .header {
+    height: 64px;
+    padding: 0 24px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .main {
+    padding: 80px 24px 40px;
+  }
+
+  .portalHeader {
+    margin-bottom: 32px;
+    gap: 12px;
+  }
+
+  .iconBox {
+    width: 56px;
+    height: 56px;
+  }
+
+  .portalTitle {
+    font-size: 32px;
+  }
+
+  .card {
+    padding: 32px;
+  }
+
+  .form {
+    gap: 20px;
+  }
+
+  .orb1 {
+    width: 400px;
+    height: 400px;
+    top: -150px;
+    left: -150px;
+  }
+
+  .orb2 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .orb3 {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .header {
+    padding: 0 32px;
+  }
+
+  .main {
+    padding: 80px 32px 60px;
+  }
+
   .card {
     padding: 40px;
+  }
+
+  .orb1 {
+    width: 500px;
+    height: 500px;
+    top: -200px;
+    left: -200px;
+  }
+
+  .orb2 {
+    width: 400px;
+    height: 400px;
+  }
+
+  .orb3 {
+    width: 300px;
+    height: 300px;
   }
 }

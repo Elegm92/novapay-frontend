@@ -10,9 +10,9 @@ function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
 
   const tabs = [
-    { to: "/dashboard", label: "Dashboard", icon: "grid_view" },
-    { to: "/transactions", label: "Transactions", icon: "receipt_long" },
-    { to: "/history", label: "History", icon: "history" },
+    { to: "/dashboard", label: "Home", icon: "grid_view" },
+    { to: "/transactions", label: "Transacciones", icon: "receipt_long" },
+    { to: "/history", label: "Historial", icon: "history" },
   ];
 
   return (
@@ -30,7 +30,7 @@ function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
           {!isCollapsed && (
             <section className={styles.brandText}>
               <h1>Sentinel NovaPay</h1>
-              <p>Fraud Analysis Unit</p>
+              <p>Centro de Detección de Fraude</p>
             </section>
           )}
         </section>
@@ -59,7 +59,7 @@ function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
         <button
           className={styles.collapseBtn}
           onClick={onToggleCollapse}
-          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={isCollapsed ? "Expandir menú" : "Colapsar menú"}
         >
           <span className="material-icons">
             {isCollapsed ? "chevron_right" : "chevron_left"}
@@ -73,7 +73,7 @@ function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
               isCollapsed ? styles.userProfileCollapsed : ""
             }`}
             onClick={() => setShowAvatarSelector(true)}
-            title={isCollapsed ? user?.name || "Analyst" : "Change avatar"}
+            title={isCollapsed ? user?.name || "Analista" : "Cambiar avatar"}
           >
             <img
               src={getAvatarUrl(user?.avatar_style, user?.email)}
@@ -82,8 +82,10 @@ function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
             />
             {!isCollapsed && (
               <section className={styles.userInfo}>
-                <p className={styles.userName}>{user?.name || "Analyst"}</p>
-                <p className={styles.userRole}>{user?.role || "analyst"}</p>
+                <p className={styles.userName}>{user?.name || "Analista"}</p>
+                <p className={styles.userRole}>
+                  {user?.role === "analyst" ? "Analista" : user?.role || "Analista"}
+                </p>
               </section>
             )}
           </section>

@@ -42,7 +42,7 @@ const Transactions = () => {
       setTotal(data.total_pending || data.total || 0);
     } catch (error) {
       console.error("Error fetching queue:", error);
-      setError("Failed to load transactions.");
+      setError("Error al cargar las transacciones.");
     } finally {
       setLoading(false);
     }
@@ -116,7 +116,7 @@ const Transactions = () => {
   const TABS = [
     {
       key: "pending",
-      label: "Pending",
+      label: "Pendientes",
       filter: (tx) =>
         tx.status === "pending" &&
         tx.decision?.toLowerCase() !== "block" &&
@@ -124,12 +124,12 @@ const Transactions = () => {
     },
     {
       key: "blocked",
-      label: "Blocked",
+      label: "Bloqueadas",
       filter: (tx) => tx.decision?.toLowerCase() === "block",
     },
     {
       key: "legitimate",
-      label: "Legitimate",
+      label: "Legítimas",
       filter: (tx) => tx.decision?.toLowerCase() === "allow",
     },
   ];
@@ -183,13 +183,13 @@ const Transactions = () => {
       <div className={styles.container}>
         <div className={styles.pageHeader}>
           <div className={styles.headerText}>
-            <h2>Transaction Monitoring</h2>
-            <p>Analyze and resolve flagged financial activities.</p>
+            <h2>Monitorización de Transacciones</h2>
+            <p>Analiza y resuelve actividades financieras sospechosas.</p>
           </div>
           <div className={styles.headerActions}>
             <button className={styles.refreshBtn} onClick={handleRefresh}>
               <span className="material-icons">refresh</span>
-              Refresh Feed
+              Actualizar
             </button>
             <button
               className={styles.exportBtn}
@@ -197,7 +197,7 @@ const Transactions = () => {
               disabled={!transactions.length}
             >
               <span className="material-icons">download</span>
-              Export CSV
+              Exportar CSV
             </button>
           </div>
         </div>
@@ -226,7 +226,7 @@ const Transactions = () => {
           <span className="material-icons">search</span>
           <input
             type="text"
-            placeholder="Search by ID, account, type, country or category..."
+            placeholder="Buscar por ID, cuenta, tipo, país o categoría..."
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -237,7 +237,7 @@ const Transactions = () => {
 
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
-            <label>Risk Level</label>
+            <label>Nivel de Riesgo</label>
             <CustomSelect
               value={filters.risk_level}
               onChange={(val) => {
@@ -246,15 +246,15 @@ const Transactions = () => {
                 setOffset(0);
               }}
               options={[
-                { value: "", label: "All Risks" },
-                { value: "high", label: "High" },
-                { value: "medium", label: "Medium" },
-                { value: "low", label: "Low" },
+                { value: "", label: "Todos los Riesgos" },
+                { value: "high", label: "Alto" },
+                { value: "medium", label: "Medio" },
+                { value: "low", label: "Bajo" },
               ]}
             />
           </div>
           <div className={styles.filterGroup}>
-            <label>Transaction Type</label>
+            <label>Tipo de Transacción</label>
             <CustomSelect
               value={filters.type}
               onChange={(val) => {
@@ -263,12 +263,12 @@ const Transactions = () => {
                 setOffset(0);
               }}
               options={[
-                { value: "", label: "All Types" },
-                { value: "TRANSFER", label: "Transfer" },
-                { value: "CASH_OUT", label: "Cash Out" },
-                { value: "PAYMENT", label: "Payment" },
-                { value: "DEBIT", label: "Debit" },
-                { value: "CASH_IN", label: "Cash In" },
+                { value: "", label: "Todos los Tipos" },
+                { value: "TRANSFER", label: "Transferencia" },
+                { value: "CASH_OUT", label: "Retirada" },
+                { value: "PAYMENT", label: "Pago" },
+                { value: "DEBIT", label: "Débito" },
+                { value: "CASH_IN", label: "Ingreso" },
               ]}
             />
           </div>

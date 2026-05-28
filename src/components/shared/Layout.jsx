@@ -36,7 +36,11 @@ function Layout({ children }) {
             : ""
         }`}
       >
-        <Header onToggleSidebar={toggleMobile} sidebarOpen={sidebarOpen} />
+        <Header
+          onToggleSidebar={toggleMobile}
+          sidebarOpen={sidebarOpen}
+          isCollapsed={sidebarCollapsed}
+        />
         <main className={styles.content}>{children}</main>
       </section>
     </section>

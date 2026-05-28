@@ -1,8 +1,7 @@
 import styles from "./KPICard.module.css";
+import { formatNumber } from "../../utils/formatters.js";
 
 function KPICard({ label, value, icon, trend }) {
-  const formattedValue =
-    typeof value === "number" ? value.toLocaleString("es-ES") : value;
 
   return (
     <article className={styles.card}>
@@ -10,7 +9,7 @@ function KPICard({ label, value, icon, trend }) {
         <p className={styles.label}>{label}</p>
         {icon && <span className="material-icons">{icon}</span>}
       </header>
-      <h3 className={styles.value}>{formattedValue ?? "—"}</h3>
+      <h3 className={styles.value}>{formatNumber(value)}</h3>
       {trend && <span className={styles.trend}>{trend}</span>}
     </article>
   );
