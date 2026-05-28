@@ -1,82 +1,12 @@
-
-Desafio-Tripulación
-/
-Claude ha terminado la respuesta
-
-backend_code.txt
-txt
-
-
-frontend_code.txt
-txt
-
-necesito que de este proyecto me hagas dos README.md con todo lo que contiene mi proyecto que sea informativo para los usuarios que quieran ver como esta estructurado y que explique todo lo que hace el proyecto  y como descargarlo , que ponga todos los enpoints que usa de parte de web y los de data  y que ponga  los despliegues que hace en back con render y el front con netlify y supabase la bbdd te paso las url de render: https://novapay-backend-3p3z.onrender.com
-y de netlify : [dynamic-mochi-c67f8b.netlify.app](https://dynamic-mochi-c67f8b.netlify.app/)
-y necesito que me dejes espacios en el readme del front para poner imagenes al inicio una o dos para que visualmentese vea la app ejemplo pantalla de login y home o transación , vale he metido dos img en carpeta assets que es login.png y dasboard.png , creame los archivos con las imagenes incluidas
-
-Mostrar más
-14:05
-
-Ejecutó 6 comandos, visualizó un archivo
-Ejecutó 6 comandos, visualizó un archivo
-Now I have enough context. Let me create both README files.
-
-
-Check for image files
-Check for image files
-Las imágenes no están en uploads pero las mencionas en assets/. Las incluiré en el README con la ruta relativa ./src/assets/ tal como las tendrías en el proyecto. Creo los dos archivos ahora:
-
-
-Se crearon 2 archivos, leyó un archivo
-Se crearon 2 archivos, leyó un archivo
-Aquí tienes los dos README listos. Un resumen de lo que incluye cada uno:
-
-README-frontend.md
-
-Dos espacios para imágenes al inicio con las rutas ./src/assets/login.png y ./src/assets/dasboard.png exactamente como las tienes en tu carpeta assets.
-Descripción de todas las páginas (Login, Dashboard, Transactions, History).
-Estructura completa del proyecto.
-Tabla con todos los endpoints que consume el frontend.
-Instrucciones de instalación local con la variable VITE_API_URL.
-Credenciales de acceso demo.
-Sección de despliegue en Netlify con el truco del _redirects para el enrutamiento SPA.
-README-backend.md
-
-Tabla con la URL de Render y Supabase.
-Arquitectura completa con todos los archivos explicados.
-Tablas detalladas de todos los endpoints agrupados por módulo (Auth, Transacciones, Decisiones, Fraude/DS, Stats, Clientes).
-Descripción de los modelos de base de datos.
-Sección de seguridad (Helmet, CORS, JWT, rate limiting, bcrypt).
-Instrucciones de instalación con el .env completo.
-Nota sobre el cold start de Render en el plan gratuito.
-Solo tienes que pegar cada archivo en la raíz de su repositorio correspondiente y añadir el enlace al repositorio del frontend en la última línea del README-frontend.
-
-
-Readme frontend
-Documento · MD 
-
-Readme backend
-Documento · MD 
-
-
-
-
-
-
-Claude es IA y puede cometer errores. Por favor, verifica las respuestas.
-
-
-raw
-Readme frontend · MD
-# 🛡️ NovaPay — Frontend
+# NovaPay — Frontend
  
 > Panel de control para analistas de fraude financiero.  
 > Construido con **React 19 + Vite** y desplegado en **Netlify**.
  
 ---
  
-## 📸 Vista previa
- 
+## Vista previa
+
 ### Login — Portal de acceso seguro
  
 ![Login screen](./src/assets/login.png)
@@ -89,8 +19,8 @@ Readme frontend · MD
  
 ---
  
-## 🌐 Despliegue
- 
+## Despliegue
+
 | Entorno | URL |
 |--------|-----|
 | **Producción (Netlify)** | [https://dynamic-mochi-c67f8b.netlify.app](https://dynamic-mochi-c67f8b.netlify.app) |
@@ -99,7 +29,7 @@ Readme frontend · MD
  
 ---
  
-## 📋 Descripción general
+## Descripción general
  
 **Sentinel NovaPay** es un panel de gestión de fraude financiero diseñado para analistas de seguridad. Permite:
  
@@ -112,7 +42,7 @@ Readme frontend · MD
 - Revisar el historial completo de decisiones de todos los analistas.
 ---
  
-## 🗂️ Estructura del proyecto
+## Estructura del proyecto
  
 ```
 front/
@@ -170,7 +100,7 @@ front/
  
 ---
  
-## 📄 Páginas
+## Páginas
  
 ### `/login` — Portal de acceso
 Formulario de autenticación con validación de email, toggle de contraseña y mensaje de auditoría. Redirige al dashboard tras el login exitoso.
@@ -243,7 +173,7 @@ Tabla con todas las decisiones ya tomadas por los analistas, con filtros por ver
  
 ---
  
-## 🔐 Autenticación
+## Autenticación
  
 La autenticación se gestiona mediante el **AuthContext**:
  
@@ -252,7 +182,7 @@ La autenticación se gestiona mediante el **AuthContext**:
 3. Las rutas protegidas (`/dashboard`, `/transactions`, `/history`) están envueltas en el componente `ProtectedRoute`, que redirige a `/login` si no hay sesión activa.
 ---
  
-## 🚀 Instalación y ejecución local
+## Instalación y ejecución local
  
 ### Requisitos previos
  
@@ -302,7 +232,7 @@ Los archivos compilados se generan en la carpeta `dist/`.
  
 ---
  
-## 🎨 Credenciales de acceso (demo)
+## Credenciales de acceso (demo)
  
 | Campo | Valor |
 |-------|-------|
@@ -311,7 +241,7 @@ Los archivos compilados se generan en la carpeta `dist/`.
  
 ---
  
-## 🧰 Stack tecnológico
+## Stack tecnológico
  
 | Paquete | Versión | Uso |
 |---------|---------|-----|
@@ -324,7 +254,7 @@ Los archivos compilados se generan en la carpeta `dist/`.
  
 ---
  
-## ☁️ Despliegue en Netlify
+## Despliegue en Netlify
  
 El frontend está desplegado como **sitio estático** en [Netlify](https://netlify.com):
  
