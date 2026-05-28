@@ -15,7 +15,7 @@
  
 ### Dashboard — Panel principal de vigilancia
  
-![Dashboard screen](./src/assets/dasboard.png)
+![Dashboard screen](./src/assets/dashboard.png)
  
 ---
  
@@ -121,7 +121,7 @@ Tabla con todas las decisiones ya tomadas por los analistas, con filtros por ver
  
 ---
  
-## 🔌 Endpoints consumidos
+## Endpoints consumidos
  
 > Base URL configurada en `VITE_API_URL` (por defecto `http://localhost:3000`)
  
