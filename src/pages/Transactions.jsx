@@ -301,17 +301,21 @@ const Transactions = () => {
               <div className={styles.pagination}>
                 <button
                   className={styles.pageBtn}
-                  onClick={() => setOffset(offset - LIMIT)}
+                  onClick={() => {
+                    setOffset(offset - LIMIT);
+                    setSelectedTransaction(null);
+                  }}
                   disabled={offset === 0}
                 >
                   <span className="material-icons">chevron_left</span>
                 </button>
-                <span className={styles.pageInfo}>
-                  {currentPage} / {totalPages}
-                </span>
+
                 <button
                   className={styles.pageBtn}
-                  onClick={() => setOffset(offset + LIMIT)}
+                  onClick={() => {
+                    setOffset(offset + LIMIT);
+                    setSelectedTransaction(null);
+                  }}
                   disabled={currentPage >= totalPages}
                 >
                   <span className="material-icons">chevron_right</span>
