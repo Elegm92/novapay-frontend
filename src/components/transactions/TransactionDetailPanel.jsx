@@ -31,7 +31,6 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
     try {
       setLoading(true);
       setError("");
-
       const transactionPayload = {
         transaction_id: transaction.transaction_id,
         step: transaction.step,
@@ -47,6 +46,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
         ip_country: transaction.ip_country,
       };
 
+      // Llamadas principales en paralelo
       const [decisionData, challengeData] = await Promise.all([
         decideTransaction(transactionPayload),
         getChallengeRecommendation({
@@ -60,6 +60,7 @@ const TransactionDetailPanel = ({ transaction, onClose, isReviewed }) => {
       setDecision(decisionData);
       setChallenge(challengeData);
 
+      // Llamada a la IA
       explainTransaction(transaction.transaction_id)
         .then((explainData) => setNarrative(explainData.narrative))
         .catch(() => {});

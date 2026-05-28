@@ -17,6 +17,7 @@ const ClientModal = ({ clientId, isOpen, onClose }) => {
   }, [isOpen, clientId]);
 
   const fetchClientProfile = async () => {
+
     if (cache.current[clientId]) {
       setClientData(cache.current[clientId]);
       setLoading(false);
