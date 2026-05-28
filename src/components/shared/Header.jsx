@@ -5,7 +5,7 @@ import AvatarSelector from "./AvatarSelector.jsx";
 import styles from "./Header.module.css";
 import { getAvatarUrl } from "../../utils/avatar.js";
 
-function Header({ onToggleSidebar, sidebarOpen }) {
+function Header({ onToggleSidebar, sidebarOpen, isCollapsed }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
@@ -17,11 +17,13 @@ function Header({ onToggleSidebar, sidebarOpen }) {
 
   return (
     <>
-      <header className={styles.header}>
+      <header
+        className={`${styles.header} ${isCollapsed ? styles.headerCollapsed : ""}`}
+      >
         <button
           className={styles.hamburger}
           onClick={onToggleSidebar}
-          title={sidebarOpen ? "Close menu" : "Open menu"}
+          title={sidebarOpen ? "Cerrar Menú" : "Abrir Menú"}
         >
           <span className="material-icons">
             {sidebarOpen ? "close" : "menu"}
@@ -31,15 +33,19 @@ function Header({ onToggleSidebar, sidebarOpen }) {
         <section className={styles.actions}>
           <section className={styles.user}>
             <section className={styles.userText}>
-              <p className={styles.name}>{user?.name || "Analyst"}</p>
-              <p className={styles.role}>{user?.role || "analyst"}</p>
+              <p className={styles.name}>{user?.name || "Analista"}</p>
+              <p className={styles.role}>
+                {user?.role === "analyst"
+                  ? "Analista"
+                  : user?.role || "Analista"}
+              </p>
             </section>
             <img
               src={getAvatarUrl(user?.avatar_style, user?.email)}
               alt="Avatar"
               className={styles.avatar}
               onClick={() => setShowAvatarSelector(true)}
-              title="Change avatar"
+              title="Cambiar Avatar"
               style={{ cursor: "pointer" }}
             />
           </section>

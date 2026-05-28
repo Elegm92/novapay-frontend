@@ -288,11 +288,15 @@
 @media (min-width: 768px) {
   .overlay {
     align-items: center;
-    padding: 24px;
+    padding-left: calc(var(--sidebar-width) + 96px);
+    padding-right: 24px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    box-sizing: border-box;
   }
 
   .modal {
-    width: 90%;
+    width: 100%;
     max-width: 640px;
     max-height: 85vh;
     border-radius: var(--radius-lg);
@@ -305,10 +309,22 @@
 
 /* ── Desktop ── */
 @media (min-width: 1024px) {
-  .modal {
-    width: 80%;
-    max-width: 720px;
+  @media (min-width: 1024px) {
+  .overlay {
+    padding-left: calc(var(--sidebar-width) + 32px);
+    padding-right: 32px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
   }
+
+  .modal {
+    width: 100%;
+    max-width: 720px;
+    border-radius: var(--radius-lg);
+    transform: translateX(80px);
+  }
+}
 
   .statsGrid {
     grid-template-columns: repeat(3, 1fr);

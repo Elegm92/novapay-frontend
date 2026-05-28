@@ -40,22 +40,30 @@ function LoginForm() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerBrand}>
-          <span className="material-icons" style={{ color: "var(--color-primary)" }}>security</span>
+          <span
+            className="material-icons"
+            style={{ color: "var(--color-primary)" }}
+          >
+            security
+          </span>
           <span className={styles.headerTitle}>Sentinel NovaPay</span>
         </div>
-        <span className={styles.headerVersion}>v4.2.0-PROD</span>
       </header>
 
       {/* Main */}
       <main className={styles.main}>
         <div className={styles.wrapper}>
-
           {/* Portal header */}
           <div className={styles.portalHeader}>
             <div className={styles.iconBox}>
-              <span className="material-icons" style={{ fontSize: 28, color: "var(--color-primary)" }}>terminal</span>
+              <span
+                className="material-icons"
+                style={{ fontSize: 28, color: "var(--color-primary)" }}
+              >
+                terminal
+              </span>
             </div>
-            <h1 className={styles.portalTitle}>Portal Access</h1>
+            <h1 className={styles.portalTitle}>Portal Acceso</h1>
           </div>
 
           {/* Card */}
@@ -63,12 +71,15 @@ function LoginForm() {
             <div className={styles.cardGlow} />
 
             <form className={styles.form} onSubmit={handleSubmit}>
-
               {/* Email */}
               <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="email">Operator ID</label>
+                <label className={styles.label} htmlFor="email">
+                  Usuario
+                </label>
                 <div className={styles.inputWrapper}>
-                  <span className={`material-icons ${styles.inputIcon}`}>mail</span>
+                  <span className={`material-icons ${styles.inputIcon}`}>
+                    mail
+                  </span>
                   <input
                     className={styles.input}
                     id="email"
@@ -76,7 +87,7 @@ function LoginForm() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="analyst@novapay.com"
+                    placeholder="mail@example.com"
                     required
                     autoFocus
                   />
@@ -85,9 +96,13 @@ function LoginForm() {
 
               {/* Password */}
               <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="password">Access Key</label>
+                <label className={styles.label} htmlFor="password">
+                  Contraseña
+                </label>
                 <div className={styles.inputWrapper}>
-                  <span className={`material-icons ${styles.inputIcon}`}>key</span>
+                  <span className={`material-icons ${styles.inputIcon}`}>
+                    key
+                  </span>
                   <input
                     className={`${styles.input} ${styles.inputMono}`}
                     id="password"
@@ -112,46 +127,44 @@ function LoginForm() {
 
               {error && <p className={styles.error}>{error}</p>}
 
-              <button className={styles.submitBtn} type="submit" disabled={loading}>
-                {loading ? "Authenticating..." : "Initialize Session"}
-                {!loading && <span className="material-icons">arrow_forward</span>}
+              <button
+                className={styles.submitBtn}
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Authenticating..." : "Iniciar Sesion"}
+                {!loading && (
+                  <span className="material-icons">arrow_forward</span>
+                )}
               </button>
-
             </form>
 
             {/* System message */}
             <div className={styles.systemMsg}>
-              <span className="material-icons" style={{ fontSize: 16, color: "var(--color-primary)", marginTop: 2 }}>info</span>
+              <span
+                className="material-icons"
+                style={{
+                  fontSize: 16,
+                  color: "var(--color-primary)",
+                  marginTop: 2,
+                }}
+              >
+                info
+              </span>
               <p className={styles.systemMsgText}>
-                Access is logged and audited. Multiple failed attempts will trigger a biometric verification lockout.
+                El acceso está registrado y auditado. Múltiples intentos
+                fallidos resultarán en el bloqueo temporal de la cuenta.
               </p>
             </div>
           </div>
 
           {/* Footer note */}
           <p className={styles.footerNote}>
-            Property of Sentinel Global SecOps. Unauthorized use is strictly prohibited and subject to legal action under Directive 99-A.
+            Property of Sentinel Global SecOps. Unauthorized use is strictly
+            prohibited and subject to legal action under Directive 99-A.
           </p>
-
         </div>
       </main>
-
-      {/* Status bar */}
-      <footer className={styles.statusBar}>
-        <div className={styles.statusLeft}>
-          <div className={styles.statusIndicator}>
-            <span className={styles.statusDot} />
-            <span className={styles.statusText}>System Status: NOMINAL</span>
-          </div>
-          <span className={styles.statusDivider} />
-          <span className={styles.statusText}>Region: Global-Alpha</span>
-        </div>
-        <div className={styles.statusRight}>
-          <span className={styles.statusLink}>Network Secure</span>
-          <span className={styles.statusLink}>System Status</span>
-          <span className={styles.statusLink}>Privacy Protocol</span>
-        </div>
-      </footer>
     </div>
   );
 }

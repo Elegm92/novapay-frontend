@@ -1,4 +1,8 @@
 import styles from './HistoryDetailModal.module.css'
+import {
+  formatCurrency,
+  formatStepAsTime,
+} from "../../utils/formatters.js";
 
 const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
   if (!isOpen || !decision) return null
@@ -9,7 +13,7 @@ const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
         {/* Header */}
         <div className={styles.header}>
           <div>
-            <h3>Decision Record</h3>
+            <h3>Registro de Decisión</h3>
             <p className={styles.transactionId}>{decision.transaction_id}</p>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
@@ -20,86 +24,76 @@ const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
         {/* Contenido */}
         <div className={styles.content}>
           <div className={styles.leftColumn}>
-            <h4>Transaction Details</h4>
+            <h4>Detalles de la Transacción</h4>
             <div className={styles.dataGrid}>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Amount</p>
+                <p className={styles.dataLabel}>Importe</p>
                 <p className={styles.dataValue}>
-                  ${decision.Transaction?.amount?.toLocaleString() ?? "—"}
+                  {formatCurrency(decision.Transaction?.amount)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Type</p>
+                <p className={styles.dataLabel}>Tipo</p>
                 <p className={styles.dataValue}>
                   {decision.Transaction?.type ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Source Account</p>
+                <p className={styles.dataLabel}>Cuenta Origen</p>
                 <p className={styles.dataValue}>
                   {decision.Transaction?.nameOrig ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Destination Account</p>
+                <p className={styles.dataLabel}>Cuenta Destino</p>
                 <p className={styles.dataValue}>
                   {decision.Transaction?.nameDest ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Balance Before</p>
+                <p className={styles.dataLabel}>Saldo Antes</p>
                 <p className={styles.dataValue}>
-                  {decision.Transaction?.oldbalanceOrg != null
-                    ? `$${decision.Transaction.oldbalanceOrg.toLocaleString()}`
-                    : "—"}
+                  {formatCurrency(decision.Transaction?.oldbalanceOrg)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Balance After</p>
+                <p className={styles.dataLabel}>Saldo Después</p>
                 <p className={styles.dataValue}>
-                  {decision.Transaction?.newbalanceOrig != null
-                    ? `$${decision.Transaction.newbalanceOrig.toLocaleString()}`
-                    : "—"}
+                  {formatCurrency(decision.Transaction?.newbalanceOrig)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Dest. Balance Before</p>
+                <p className={styles.dataLabel}>Saldo Destino Antes</p>
                 <p className={styles.dataValue}>
-                  {decision.Transaction?.oldbalanceDest != null
-                    ? `$${decision.Transaction.oldbalanceDest.toLocaleString()}`
-                    : "—"}
+                  {formatCurrency(decision.Transaction?.oldbalanceDest)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Dest. Balance After</p>
+                <p className={styles.dataLabel}>Saldo Destino Después</p>
                 <p className={styles.dataValue}>
-                  {decision.Transaction?.newbalanceDest != null
-                    ? `$${decision.Transaction.newbalanceDest.toLocaleString()}`
-                    : "—"}
+                  {formatCurrency(decision.Transaction?.newbalanceDest)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Country</p>
+                <p className={styles.dataLabel}>País</p>
                 <p className={styles.dataValue}>
                   {decision.Transaction?.ip_country ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Category</p>
+                <p className={styles.dataLabel}>Categoría</p>
                 <p className={styles.dataValue}>
                   {decision.Transaction?.merchant_category ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Step</p>
+                <p className={styles.dataLabel}>Paso</p>
                 <p className={styles.dataValue}>
-                  {decision.Transaction?.step != null
-                    ? `Hour ${decision.Transaction.step}`
-                    : "—"}
+                  {formatStepAsTime(decision.Transaction?.step)}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Date</p>
+                <p className={styles.dataLabel}>Fecha</p>
                 <p className={styles.dataValue}>
                   {new Date(decision.createdAt).toLocaleString()}
                 </p>
@@ -108,10 +102,10 @@ const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
           </div>
 
           <div className={styles.rightColumn}>
-            <h4>Verdict Summary</h4>
+            <h4>Resumen del Veredicto</h4>
             <div className={styles.verdictCard}>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Verdict</p>
+                <p className={styles.dataLabel}>Veredicto</p>
                 <span
                   className={`${styles.verdictBadge} ${styles[decision.verdict]}`}
                 >
@@ -119,13 +113,13 @@ const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
                 </span>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Analyst</p>
+                <p className={styles.dataLabel}>Analista</p>
                 <p className={styles.dataValue}>
                   {decision.Analyst?.name ?? "—"}
                 </p>
               </div>
               <div className={styles.dataItem}>
-                <p className={styles.dataLabel}>Notes</p>
+                <p className={styles.dataLabel}>Notas</p>
                 <p className={styles.notes}>{decision.notes ?? "—"}</p>
               </div>
             </div>
@@ -135,7 +129,7 @@ const HistoryDetailModal = ({ decision, isOpen, onClose }) => {
         {/* Footer */}
         <div className={styles.footer}>
           <button className={styles.closeButton} onClick={onClose}>
-            Close
+            Cerrar
           </button>
         </div>
       </div>

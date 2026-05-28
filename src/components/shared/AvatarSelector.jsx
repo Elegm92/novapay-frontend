@@ -28,9 +28,9 @@ const AvatarSelector = ({ onClose }) => {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h3>Choose your avatar</h3>
+          <h3>Selección Avatar</h3>
           <button className={styles.closeBtn} onClick={onClose}>
-            <span className="material-icons">close</span>
+            <span className="material-icons">Cerrar</span>
           </button>
         </div>
         <div className={styles.grid}>

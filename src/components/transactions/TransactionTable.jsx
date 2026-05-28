@@ -1,4 +1,5 @@
 import styles from './TransactionTable.module.css'
+import { formatCurrency } from "../../utils/formatters.js";
 
 const TransactionTable = ({transactions,onRowClick,expandedId,onSort,sortConfig, activeTab}) => {
   const getSortIcon = (key) => {
@@ -7,7 +8,7 @@ const TransactionTable = ({transactions,onRowClick,expandedId,onSort,sortConfig,
   };
 
   if (!transactions || transactions.length === 0) {
-    return <div className={styles.empty}>No transactions found</div>;
+    return <div className={styles.empty}>No se encontraron transacciones</div>;
   }
 
   return (
@@ -16,31 +17,31 @@ const TransactionTable = ({transactions,onRowClick,expandedId,onSort,sortConfig,
         <thead>
           <tr>
             <th onClick={() => onSort("transaction_id")}>
-              Transaction ID
+              ID Transacción
               <span className="material-icons">
                 {getSortIcon("transaction_id")}
               </span>
             </th>
 
             <th onClick={() => onSort("amount")}>
-              Amount
+              Importe
               <span className="material-icons">{getSortIcon("amount")}</span>
             </th>
 
             <th onClick={() => onSort("type")}>
-              Type
+              Tipo
               <span className="material-icons">{getSortIcon("type")}</span>
             </th>
 
             <th onClick={() => onSort("ip_country")}>
-              Country
+              País
               <span className="material-icons">
                 {getSortIcon("ip_country")}
               </span>
             </th>
 
             <th onClick={() => onSort("merchant_category")}>
-              Category
+              Categoría
               <span className="material-icons">
                 {getSortIcon("merchant_category")}
               </span>
@@ -61,7 +62,7 @@ const TransactionTable = ({transactions,onRowClick,expandedId,onSort,sortConfig,
             </th>
 
             <th onClick={() => onSort("timestamp")}>
-              Date
+              Fecha
               <span className="material-icons">{getSortIcon("timestamp")}</span>
             </th>
             <th></th>
@@ -75,7 +76,7 @@ const TransactionTable = ({transactions,onRowClick,expandedId,onSort,sortConfig,
               onClick={() => onRowClick(tx)}
             >
               <td className={styles.monoText}>{tx.transaction_id}</td>
-              <td className={styles.bold}>${tx.amount?.toLocaleString()}</td>
+              <td className={styles.bold}>{formatCurrency(tx.amount)}</td>
               <td>
                 <span className={styles.typeBadge}>{tx.type}</span>
               </td>
