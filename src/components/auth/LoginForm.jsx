@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginForm.module.css";
+import sentinelLogo from "../../assets/sentinel-logo.png";
 
 function LoginForm() {
   const { login, error, setError } = useAuth();
@@ -40,12 +41,7 @@ function LoginForm() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerBrand}>
-          <span
-            className="material-icons"
-            style={{ color: "var(--color-primary)" }}
-          >
-            security
-          </span>
+          
           <span className={styles.headerTitle}>Sentinel NovaPay</span>
         </div>
       </header>
@@ -55,15 +51,12 @@ function LoginForm() {
         <div className={styles.wrapper}>
           {/* Portal header */}
           <div className={styles.portalHeader}>
-            <div className={styles.iconBox}>
-              <span
-                className="material-icons"
-                style={{ fontSize: 28, color: "var(--color-primary)" }}
-              >
-                terminal
-              </span>
-            </div>
-            <h1 className={styles.portalTitle}>Portal Acceso</h1>
+            <img
+              src={sentinelLogo}
+              alt="Sentinel Logo"
+              style={{ width: 120, height: 120, objectFit: "contain" }}
+            />
+            <h1 className={styles.portalTitle}>Portal de acceso</h1>
           </div>
 
           {/* Card */}
