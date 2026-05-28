@@ -11,15 +11,15 @@ import {
 import styles from "./DetectionBenchmark.module.css";
 
 const metricsData = [
-  { metric: "Precision", R1: 94, R2: 99 },
-  { metric: "Recall", R1: 99, R2: 100 },
+  { metric: "Precision", R1: 94, R2: 99.21 },
+  { metric: "Recall", R1: 99, R2: 99.76 },
   { metric: "F1", R1: 97, R2: 99 },
 ];
 
 const detectionData = [
-  { metric: "Detectados", R1: 1631, R2: 1643 },
-  { metric: "Perdidos", R1: 12, R2: 0 },
-  { metric: "Falsas alarmas", R1: 96, R2: 0 },
+  { metric: "Detectados", R1: 1631, R2: 3279 },
+  { metric: "Perdidos", R1: 12, R2: 8 },
+  { metric: "Falsas alarmas", R1: 96, R2: 26 },
 ];
 
 function DetectionBenchmark() {
@@ -34,7 +34,7 @@ function DetectionBenchmark() {
 
       <div className={styles.charts}>
         <div className={styles.section}>
-          <h4 className={styles.sectionTitle}>Precision · Recall · F1</h4>
+          <h4 className={styles.sectionTitle}>Precision · Recall · F2</h4>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={metricsData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
@@ -69,7 +69,7 @@ function DetectionBenchmark() {
               <Line
                 type="monotone"
                 dataKey="R2"
-                name="R2 (threshold 0.80)"
+                name="R2 (threshold 0.55)"
                 stroke="#6366f1"
                 strokeWidth={2}
                 dot={{ r: 4 }}
@@ -80,7 +80,7 @@ function DetectionBenchmark() {
 
         <div className={styles.section}>
           <h4 className={styles.sectionTitle}>
-            Detección Real · 1.643 fraudes en test set
+            Detección Real · 3.279 fraudes en test set
           </h4>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={detectionData}>
@@ -89,7 +89,11 @@ function DetectionBenchmark() {
                 dataKey="metric"
                 tick={{ fill: "#9ca3af", fontSize: 12 }}
               />
-              <YAxis tick={{ fill: "#9ca3af", fontSize: 12 }} />
+              <YAxis
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+                domain={[0, 3500]}
+                ticks={[0, 700, 1400, 2100, 2800, 3500]}
+              />
               <Tooltip
                 isAnimationActive={false}
                 contentStyle={{
@@ -98,7 +102,6 @@ function DetectionBenchmark() {
                   borderRadius: 4,
                 }}
                 labelStyle={{ color: "#eef0ff" }}
-                formatter={(value) => `${value}%`}
               />
               <Legend wrapperStyle={{ fontSize: 12, color: "#9ca3af" }} />
               <Line
@@ -112,7 +115,7 @@ function DetectionBenchmark() {
               <Line
                 type="monotone"
                 dataKey="R2"
-                name="R2 (threshold 0.80)"
+                name="R2 (threshold 0.55)"
                 stroke="#6366f1"
                 strokeWidth={2}
                 dot={{ r: 4 }}
@@ -136,12 +139,12 @@ function DetectionBenchmark() {
         <div className={`${styles.summaryCard} ${styles.summaryCardHighlight}`}>
           <p className={styles.summaryLabel}>R2 — Fraude sigiloso</p>
           <p className={styles.summaryValue}>
-            0 <span>perdidos</span>
+            8 <span>perdidos</span>
           </p>
           <p className={styles.summaryValue}>
-            0 <span>falsas alarmas</span>
+            26 <span>falsas alarmas</span>
           </p>
-          <p className={styles.summaryThreshold}>Threshold: 0.80</p>
+          <p className={styles.summaryThreshold}>Threshold: 0.55</p>
         </div>
       </div>
     </article>

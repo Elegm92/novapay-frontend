@@ -26,9 +26,12 @@ function Dashboard() {
         setLoading(false);
       }
     };
-    fetchStats();
-  }, []);
 
+    fetchStats();
+
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
   if (loading)
     return (
       <Layout>
